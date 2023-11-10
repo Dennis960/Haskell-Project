@@ -1,4 +1,4 @@
-import Story (tellStory, isStoryInputCorrect)
+import Story (isStoryInputCorrect, tellStory)
 
 main = do
   tellStory 532
