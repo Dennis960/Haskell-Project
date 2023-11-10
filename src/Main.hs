@@ -1,6 +1,7 @@
-import Story (storyEinleitung, tellStory)
+import Story (tellStory, isStoryInputCorrect)
 
 main = do
-  tellStory storyEinleitung
+  tellStory 532
   input <- getLine
-  putStrLn $ if input == "Willkommen im Spiel" then "Richtig" else "Falsch"
+  putStrLn $ if isStoryInputCorrect 532 input then "Richtig" else "Falsch"
+  main
