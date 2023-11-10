@@ -1,10 +1,12 @@
 module Story where
 
 import Control.Concurrent (threadDelay)
-import System.IO
+import System.IO (hFlush, stdout)
 
+storyEinleitung :: Integer
 storyEinleitung = 532
 
+defaultTypingDelay :: Int
 defaultTypingDelay = 10000
 
 putTextNl :: String -> IO ()

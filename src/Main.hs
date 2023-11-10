@@ -1,6 +1,4 @@
-import Cipher
-import Data.Char
-import Story
+import Story (storyEinleitung, tellStory)
 
 main = do
   tellStory storyEinleitung

@@ -1,6 +1,6 @@
 module Cipher where
 
-import Data.Char
+import Data.Char (chr, isLower, isUpper, ord)
 
 -- Caeser Cipher
 caeserCipher :: String -> Int -> String
