@@ -31,8 +31,8 @@ stories =
             "An deinem Handgelenk klebt ein grüner Zettel. Du liest die Worte: »Wenn du dich weigerst, zu kooperieren, dann wirst du es nicht mehr hinausschaffen.«",
             "Vor lauter Schock fällt dir das Handy aus der Hand. Es geht kaputt. Du bist allein. Niemand kann dir helfen. Du musst dich selbst retten.",
             "Nach einer Weile fällt dir leuchtende Schrift auf, doch du weißt nicht, was sie bedeutet.",
-            "»SECRET«",
-            "Weiter unten steht ein Hinweis: »HINT«",
+            "»$SECRET«",
+            "Weiter unten steht ein Hinweis: »$HINT«",
             "Plötzlich leuchtet ein Terminal auf. Du kannst einen Text eingeben."
           ],
         storyHint = "Schlüssel: 3. Caesar Shift. Viel Erfolg",
@@ -80,7 +80,7 @@ replaceStorySecret story@Story {storyCypherFunction = cypherFunction, storySecre
   where
     replaceSecret :: [String] -> [String]
     replaceSecret [] = []
-    replaceSecret (x : xs) = replaceSubstring x "SECRET" (cypherFunction secret) : replaceSecret xs
+    replaceSecret (x : xs) = replaceSubstring x "$SECRET" (cypherFunction secret) : replaceSecret xs
 
 -- | Replaces the "HINT" placeholder in the story with the actual hint text
 replaceStoryHint :: Story -> Story
@@ -88,7 +88,7 @@ replaceStoryHint story = story {storyText = replaceHint (storyText story)}
   where
     replaceHint :: [String] -> [String]
     replaceHint [] = []
-    replaceHint (x : xs) = replaceSubstring x "HINT" (storyHint story) : replaceHint xs
+    replaceHint (x : xs) = replaceSubstring x "$HINT" (storyHint story) : replaceHint xs
 
 -- | Prints the story text to the console.
 printStory :: Story -> IO ()
