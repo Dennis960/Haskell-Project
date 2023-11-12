@@ -6,6 +6,7 @@ where
 
 import Cipher (caeserCipher)
 import Control.Concurrent (threadDelay)
+import KeyEvents (disableInputEcho, enableInputEcho, getKey, hasKey)
 import StringReplace (replaceSubstring)
 import System.IO (hFlush, stdout)
 
@@ -24,7 +25,7 @@ data Story = Story
 stories :: [Story]
 stories =
   [ Story
-      { storyNumber = 532,
+      { storyNumber = 1,
         storyText =
           [ "Du wachst auf. Du weißt nicht, wo du bist. Alles ist dunkel.",
             "An deinem Handgelenk klebt ein grüner Zettel. Du liest die Worte: »Wenn du dich weigerst, zu kooperieren, dann wirst du es nicht mehr hinausschaffen.«",
@@ -32,11 +33,20 @@ stories =
             "Nach einer Weile fällt dir leuchtende Schrift auf, doch du weißt nicht, was sie bedeutet.",
             "»SECRET«",
             "Weiter unten steht ein Hinweis: »HINT«",
-            "Plötzlich leuchtet ein Terminal auf. Du kannst einen Text eingeben. Neben dem Terminal steht eine Zahl: 532."
+            "Plötzlich leuchtet ein Terminal auf. Du kannst einen Text eingeben."
           ],
         storyHint = "Schlüssel: 3. Caesar Shift. Viel Erfolg",
         storySecret = "Willkommen im Spiel",
         storyCypherFunction = (`caeserCipher` 3)
+      },
+    Story
+      { storyNumber = 2,
+        storyText =
+          [ "Herzlichen Glückwunsch, du hast das Spiel durchgespielt!"
+          ],
+        storyHint = "",
+        storySecret = "",
+        storyCypherFunction = const ""
       }
   ]
 
@@ -46,8 +56,15 @@ putTextNl [] = putStrLn "\n"
 putTextNl (c : text) = do
   putStr [c]
   hFlush stdout -- flush the buffer, used to immediately print the character instead of waiting for a newline
-  threadDelay defaultTypingDelay
-  putTextNl text
+  isKeyPressed <- hasKey
+  if isKeyPressed
+    then do
+      getKey -- discard the key
+      putStr text -- print immediately if a key is pressed
+      putTextNl ""
+    else do
+      threadDelay defaultTypingDelay
+      putTextNl text
 
 -- | Returns the story with the given number from the stories list, if it exists
 getStory :: Int -> Maybe Story
@@ -85,8 +102,10 @@ tellStory a = do
   case story of
     Nothing -> putStrLn "Es gibt keine Story für diese Zahl."
     Just story -> do
+      disableInputEcho
       printStory $ replaceStoryHint $ replaceStorySecret story
-      putStr $ ">> " ++ show (storyNumber story) ++ ": "
+      putStr ">>"
+      enableInputEcho
       hFlush stdout
   where
     story = getStory a
