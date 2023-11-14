@@ -1,11 +1,14 @@
 module Story
   ( tellStory,
     isStoryInputCorrect,
+    getStory,
+    Story (..),
   )
 where
 
 import Cipher (caeserCipher)
 import Control.Concurrent (threadDelay)
+import Control.Monad.RWS (gets)
 import KeyEvents (disableInputEcho, enableInputEcho, getKey, hasKey)
 import StringReplace (replaceSubstring)
 import System.IO (hFlush, stdout)
@@ -15,10 +18,11 @@ defaultTypingDelay = 50000
 
 data Story = Story
   { storyNumber :: Int,
+    nextRoomNumber :: Maybe Int,
     storyText :: [String],
     storyHint :: String,
     storySecret :: String,
-    storyCypherFunction :: String -> String
+    storyCypherFunction :: Maybe (String -> String)
   }
 
 -- | List of all stories
@@ -27,26 +31,35 @@ stories =
   [ Story
       { storyNumber = 1,
         storyText =
-          [ "Du wachst auf. Du weißt nicht, wo du bist. Alles ist dunkel.",
-            "An deinem Handgelenk klebt ein grüner Zettel. Du liest die Worte: »Wenn du dich weigerst, zu kooperieren, dann wirst du es nicht mehr hinausschaffen.«",
-            "Vor lauter Schock fällt dir das Handy aus der Hand. Es geht kaputt. Du bist allein. Niemand kann dir helfen. Du musst dich selbst retten.",
-            "Nach einer Weile fällt dir leuchtende Schrift auf, doch du weißt nicht, was sie bedeutet.",
-            "»$SECRET«",
-            "Weiter unten steht ein Hinweis: »$HINT«",
-            "Plötzlich leuchtet ein Terminal auf. Du kannst einen Text eingeben."
+          [ "Ich bin so kurz vor meinem Ziel.",
+            "Ich spüre die utlimative Weltformel schon in meinen Händen.",
+            "Mein ganzes Leben hat mich auf diesen Moment vorbereitet.",
+            "Nun stehe ich vor einer verschlossenen Tür.",
+            "Es scheint ein uralter Mechanismus zu sein. Leuchtende Schrift steht in den Griff eingraviert.",
+            "Ich weiß, was sie bedeutet. Der große Meister hatte schon immer eine Vorliebe für Verschlüsselungen.",
+            "Ich muss nur jeden Buchstaben des Schlüssels um drei Stellen im Alphabet verschieben, dann öffnet sich die Tür.",
+            "",
+            "Du legst das Tagebuch beiseite und gehst zur Tür.",
+            "(Enter drücken zum Fortfahren)"
           ],
-        storyHint = "Schlüssel: 3. Caesar Shift. Viel Erfolg",
-        storySecret = "Willkommen im Spiel",
-        storyCypherFunction = (`caeserCipher` 3)
+        nextRoomNumber = Just 1,
+        storyHint = "",
+        storySecret = "",
+        storyCypherFunction = Nothing
       },
     Story
       { storyNumber = 2,
+        nextRoomNumber = Just 2,
         storyText =
-          [ "Herzlichen Glückwunsch, du hast das Spiel durchgespielt!"
+          [ "Am Türgriff liest du folgenden Text:",
+            "$SECRET",
+            "$HINT",
+            "Daneben ist ein Terminal, in welches du einen Text eingeben kannst.",
+            ">>"
           ],
-        storyHint = "",
-        storySecret = "",
-        storyCypherFunction = const ""
+        storyHint = "Caesar Shift 3",
+        storySecret = "Willkommen im Spiel",
+        storyCypherFunction = Just (`caeserCipher` 3)
       }
   ]
 
@@ -67,16 +80,17 @@ putTextNl (c : text) = do
       putTextNl text
 
 -- | Returns the story with the given number from the stories list, if it exists
-getStory :: Int -> Maybe Story
+getStory :: Int -> Story
 getStory a
-  | null filterStoriesWithNumber = Nothing
-  | otherwise = Just $ head filterStoriesWithNumber
+  | null filterStoriesWithNumber = error "Story not found"
+  | otherwise = head filterStoriesWithNumber
   where
     filterStoriesWithNumber = filter (\s -> storyNumber s == a) stories
 
 -- | Replaces the "SECRET" placeholder in the story with the actual secret text
 replaceStorySecret :: Story -> Story
-replaceStorySecret story@Story {storyCypherFunction = cypherFunction, storySecret = secret} = story {storyText = replaceSecret (storyText story)}
+replaceStorySecret story@Story {storyCypherFunction = Nothing} = story
+replaceStorySecret story@Story {storyCypherFunction = Just cypherFunction, storySecret = secret} = story {storyText = replaceSecret (storyText story)}
   where
     replaceSecret :: [String] -> [String]
     replaceSecret [] = []
@@ -97,23 +111,15 @@ printStory Story {storyText = text} = do
   mapM_ putTextNl text
 
 -- | Prints the story with the given number to the console. Replaces the "SECRET" and "HINT" placeholders with the actual secret and hint text.
-tellStory :: Int -> IO ()
-tellStory a = do
-  case story of
-    Nothing -> putStrLn "Es gibt keine Story für diese Zahl."
-    Just story -> do
-      disableInputEcho
-      printStory $ replaceStoryHint $ replaceStorySecret story
-      putStr ">>"
-      enableInputEcho
-      hFlush stdout
-  where
-    story = getStory a
+tellStory :: Story -> IO ()
+tellStory story = do
+  disableInputEcho
+  printStory $ replaceStoryHint $ replaceStorySecret story
+  enableInputEcho
+  hFlush stdout
 
 -- | Checks if the given input is correct for the given story number.
 isStoryInputCorrect :: Int -> String -> Bool
-isStoryInputCorrect storyNumber input = case story of
-  Nothing -> False
-  Just story -> storySecret story == input
+isStoryInputCorrect storyNumber input = (storySecret story == input) || (storySecret story == "")
   where
     story = getStory storyNumber
