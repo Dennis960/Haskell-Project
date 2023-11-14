@@ -12,9 +12,9 @@ data GameState = GameState
 
 loopPlayerInsideRoom :: GameState -> Room -> IO ()
 loopPlayerInsideRoom gameState room = do
-  printRoom room
   direction <- getDirectionKey
   let newRoom = roomDirectionMovePlayer room direction
+  printRoom newRoom
   if isPlayerTouchingStory newRoom
     then do
       run (GameState {storyNumber = Just (nextStoryNumber gameState), nextStoryNumber = nextStoryNumber gameState + 1, roomNumber = Nothing})
@@ -37,6 +37,7 @@ run gameState = do
       loopStoryTime gameState storyNumber
     GameState {storyNumber = Nothing, roomNumber = Just roomNumber} -> do
       room <- loadRoom roomNumber
+      printRoom room
       loopPlayerInsideRoom gameState room
     _ -> do
       error "Invalid game state"

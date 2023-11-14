@@ -31,13 +31,13 @@ stories =
   [ Story
       { storyNumber = 1,
         storyText =
-          [ "Ich bin so kurz vor meinem Ziel.",
+          [ "«Ich bin so kurz vor meinem Ziel.",
             "Ich spüre die utlimative Weltformel schon in meinen Händen.",
             "Mein ganzes Leben hat mich auf diesen Moment vorbereitet.",
             "Nun stehe ich vor einer verschlossenen Tür.",
-            "Es scheint ein uralter Mechanismus zu sein. Leuchtende Schrift steht in den Griff eingraviert.",
+            "Es scheint ein uralter Mechanismus zu sein. Leuchtende Schrift ist in den Griff eingraviert.",
             "Ich weiß, was sie bedeutet. Der große Meister hatte schon immer eine Vorliebe für Verschlüsselungen.",
-            "Ich muss nur jeden Buchstaben des Schlüssels um drei Stellen im Alphabet verschieben, dann öffnet sich die Tür.",
+            "Ich muss nur jeden Buchstaben des Schlüssels um drei Stellen im Alphabet verschieben, dann öffnet sich die Tür.»",
             "",
             "Du legst das Tagebuch beiseite und gehst zur Tür.",
             "(Enter drücken zum Fortfahren)"
@@ -49,7 +49,7 @@ stories =
       },
     Story
       { storyNumber = 2,
-        nextRoomNumber = Just 2,
+        nextRoomNumber = Nothing,
         storyText =
           [ "Am Türgriff liest du folgenden Text:",
             "$SECRET",
@@ -60,6 +60,20 @@ stories =
         storyHint = "Caesar Shift 3",
         storySecret = "Willkommen im Spiel",
         storyCypherFunction = Just (`caeserCipher` 3)
+      },
+    Story
+      { storyNumber = 3,
+        nextRoomNumber = Just 2,
+        storyText =
+          [ "Die Tür hinter dir schließt sich.",
+            "Zum Glück hast du das Tagebuch nicht liegen gelassen.",
+            "",
+            "«",
+            "»"
+          ],
+        storyHint = "",
+        storySecret = "",
+        storyCypherFunction = Nothing
       }
   ]
 
