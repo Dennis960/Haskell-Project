@@ -31,7 +31,7 @@ gameLoopElements =
               "Ich muss nur jeden Buchstaben des Schlüssels um drei Stellen im Alphabet verschieben, dann öffnet sich die Tür.»",
               "",
               "Du legst das Tagebuch beiseite und gehst zur Tür.",
-              "(Enter drücken zum Fortfahren)"
+              "(Enter drücken zum Fortfahren)" -- TODO put this functionality somewhere else
             ]
         },
     RoomItem
@@ -45,7 +45,7 @@ gameLoopElements =
               "$SECRET",
               "Caesar Shift 3",
               "Daneben ist ein Terminal, in welches du einen Text eingeben kannst.",
-              ">>"
+              ">>" -- TODO put the terminal arrows inside the waitForStorySolution function
             ],
           storySecret = "Willkommen im Spiel",
           storyCypherFunction = (`caeserCipher` 3)
