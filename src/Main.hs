@@ -1,6 +1,6 @@
 import KeyEvents (Direction (..), getDirectionKey)
 import Room (Room, isPlayerTouchingStory, loadRoom, printRoom, roomDirectionMovePlayer)
-import Story (Story (nextRoomName), getStory, waitForStorySolution, tellStory)
+import Story (Story (nextRoomName), getStory, tellStory, waitForStorySolution)
 
 data GameState = GameState
   { storyNumber :: Maybe Int,
