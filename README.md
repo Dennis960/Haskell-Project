@@ -43,6 +43,10 @@ It is written in Haskell.
 
 - Add new key events in src/KeyEvents.hs. Currently contains the key events for moving the player and fast forwarding the story-telling.
 
+### Typer
+
+- Used for printing out text to the console at the specified typing speed.
+
 ### StringReplace
 
 - Contains a helper function for replacing substrings. Used for replacing `$SECRET` and `$HINT` in the story.

@@ -7,14 +7,9 @@ module Story
 where
 
 import Cipher (caeserCipher)
-import Control.Concurrent (threadDelay)
-import Control.Monad.RWS (gets)
-import KeyEvents (disableInputEcho, enableInputEcho, getKey, hasKey)
+import KeyEvents (disableInputEcho, enableInputEcho)
 import StringReplace (replaceSubstring)
-import System.IO (hFlush, stdout)
-
-defaultTypingDelay :: Int
-defaultTypingDelay = 50000
+import Typer (putTextNl)
 
 data Story = Story
   { storyText :: [String],
@@ -83,22 +78,6 @@ stories =
       }
   ]
 
--- | Prints the given text to the console, character by character, with a delay of defaultTypingDelay microseconds.
-putTextNl :: String -> IO ()
-putTextNl [] = putStrLn "\n"
-putTextNl (c : text) = do
-  putStr [c]
-  hFlush stdout -- flush the buffer, used to immediately print the character instead of waiting for a newline
-  isKeyPressed <- hasKey
-  if isKeyPressed
-    then do
-      getKey -- discard the key
-      putStr text -- print immediately if a key is pressed
-      putTextNl ""
-    else do
-      threadDelay defaultTypingDelay
-      putTextNl text
-
 -- | Returns the story with the given number from the stories list, if it exists
 getStory :: Int -> Story
 getStory a = if a <= length stories then stories !! (a - 1) else error "Story does not exist"
@@ -122,9 +101,7 @@ replaceStoryHint story = story {storyText = replaceHint (storyText story)}
 
 -- | Prints the story text to the console.
 printStory :: Story -> IO ()
-printStory Story {storyText = text} = do
-  -- for every element of text, print it with putTextNl
-  mapM_ putTextNl text
+printStory Story {storyText = text} = mapM_ putTextNl text
 
 -- | Prints the story to the console. Replaces the "SECRET" and "HINT" placeholders with the actual secret and hint text.
 tellStory :: Story -> IO ()
@@ -132,9 +109,8 @@ tellStory story = do
   disableInputEcho
   printStory $ replaceStoryHint $ replaceStorySecret story
   enableInputEcho
-  hFlush stdout
 
-
+-- | Waits for the user to enter the correct solution for the given story.
 waitForStorySolution :: Story -> IO ()
 waitForStorySolution story = do
   input <- getLine
@@ -142,8 +118,7 @@ waitForStorySolution story = do
     then do
       return ()
     else do
-      putStr "Das Terminal piept dreimal schnell und leuchtet rot auf.\n>>"
-      hFlush stdout
+      putStrLn "Das Terminal piept einmal kurz und leuchtet rot auf."
       waitForStorySolution story
 
 -- | Checks if the given input is correct for the given story.
