@@ -18,11 +18,11 @@ defaultTypingDelay = 50000
 
 data Story = Story
   { storyNumber :: Int,
-    nextRoomNumber :: Maybe Int,
     storyText :: [String],
     storyHint :: String,
     storySecret :: String,
-    storyCypherFunction :: Maybe (String -> String)
+    storyCypherFunction :: Maybe (String -> String),
+    nextRoomName :: Maybe String
   }
 
 -- | List of all stories
@@ -42,14 +42,13 @@ stories =
             "Du legst das Tagebuch beiseite und gehst zur Tür.",
             "(Enter drücken zum Fortfahren)"
           ],
-        nextRoomNumber = Just 1,
         storyHint = "",
         storySecret = "",
-        storyCypherFunction = Nothing
+        storyCypherFunction = Nothing,
+        nextRoomName = Just "passage"
       },
     Story
       { storyNumber = 2,
-        nextRoomNumber = Nothing,
         storyText =
           [ "Am Türgriff liest du folgenden Text:",
             "$SECRET",
@@ -59,21 +58,33 @@ stories =
           ],
         storyHint = "Caesar Shift 3",
         storySecret = "Willkommen im Spiel",
-        storyCypherFunction = Just (`caeserCipher` 3)
+        storyCypherFunction = Just (`caeserCipher` 3),
+        nextRoomName = Nothing
       },
     Story
       { storyNumber = 3,
-        nextRoomNumber = Just 2,
         storyText =
-          [ "Die Tür hinter dir schließt sich.",
+          [ "Mit einem lauten Krachen öffnet sich die alte Tür. Du gehst hindurch und merkst, wie die Luft deutlich kühler wird. Die Tür hinter dir schließt sich.",
             "Zum Glück hast du das Tagebuch nicht liegen gelassen.",
             "",
-            "«",
-            "»"
+            "«Es ist erstaunlich, welch riesige Mechanismen der große Meister erschaffen hat, um seine wichtigsten Schätze zu schützen.",
+            "Ich habe nur Gerüchte gehört, aber es heißt, dass das gesamte Gebäude sofort einstürtzen würde, wenn man einen Raum betritt, ohne das vorherige Rätsel gelöst zu haben.",
+            "Damit wäre die Weltformel für immer verloren.»"
           ],
         storyHint = "",
         storySecret = "",
-        storyCypherFunction = Nothing
+        storyCypherFunction = Nothing,
+        nextRoomName = Just "passage_corner"
+      },
+    Story
+      { storyNumber = 4,
+        storyText =
+          [ ""
+          ],
+        storyHint = "",
+        storySecret = "",
+        storyCypherFunction = Nothing,
+        nextRoomName = Nothing
       }
   ]
 
@@ -133,7 +144,5 @@ tellStory story = do
   hFlush stdout
 
 -- | Checks if the given input is correct for the given story number.
-isStoryInputCorrect :: Int -> String -> Bool
-isStoryInputCorrect storyNumber input = (storySecret story == input) || (storySecret story == "")
-  where
-    story = getStory storyNumber
+isStoryInputCorrect :: Story -> String -> Bool
+isStoryInputCorrect story input = (storySecret story == input) || (storySecret story == "")
