@@ -1,6 +1,6 @@
 import KeyEvents (Direction (..), getDirectionKey, getKey)
 import Room (Room, isPlayerTouchingStory, loadRoom, printRoom, roomDirectionMovePlayer)
-import Story (Story (nextRoomName), getStory, isStoryInputCorrect, tellStory)
+import Story (Story (nextRoomName), getStory, waitForStorySolution, tellStory)
 import System.IO (hFlush, stdout)
 
 data GameState = GameState
@@ -41,17 +41,5 @@ run gameState = do
       loopPlayerInsideRoom gameState room
     _ -> do
       error "Invalid game state"
-
--- TODO extract this function
-waitForStorySolution :: Story -> IO ()
-waitForStorySolution story = do
-  input <- getLine
-  if isStoryInputCorrect story input
-    then do
-      return ()
-    else do
-      putStr "Das Terminal piept dreimal schnell und leuchtet rot auf.\n>>"
-      hFlush stdout
-      waitForStorySolution story
 
 main = run (GameState {storyNumber = Just 1, nextStoryNumber = 2, roomName = Nothing})

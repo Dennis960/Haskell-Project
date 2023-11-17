@@ -1,6 +1,6 @@
 module Story
   ( tellStory,
-    isStoryInputCorrect,
+    waitForStorySolution,
     getStory,
     Story (..),
   )
@@ -133,6 +133,18 @@ tellStory story = do
   printStory $ replaceStoryHint $ replaceStorySecret story
   enableInputEcho
   hFlush stdout
+
+
+waitForStorySolution :: Story -> IO ()
+waitForStorySolution story = do
+  input <- getLine
+  if isStoryInputCorrect story input
+    then do
+      return ()
+    else do
+      putStr "Das Terminal piept dreimal schnell und leuchtet rot auf.\n>>"
+      hFlush stdout
+      waitForStorySolution story
 
 -- | Checks if the given input is correct for the given story.
 isStoryInputCorrect :: Story -> String -> Bool
