@@ -126,7 +126,7 @@ printStory Story {storyText = text} = do
   -- for every element of text, print it with putTextNl
   mapM_ putTextNl text
 
--- | Prints the story with the given number to the console. Replaces the "SECRET" and "HINT" placeholders with the actual secret and hint text.
+-- | Prints the story to the console. Replaces the "SECRET" and "HINT" placeholders with the actual secret and hint text.
 tellStory :: Story -> IO ()
 tellStory story = do
   disableInputEcho
@@ -134,6 +134,6 @@ tellStory story = do
   enableInputEcho
   hFlush stdout
 
--- | Checks if the given input is correct for the given story number.
+-- | Checks if the given input is correct for the given story.
 isStoryInputCorrect :: Story -> String -> Bool
 isStoryInputCorrect story input = (storySecret story == input) || (storySecret story == "")
