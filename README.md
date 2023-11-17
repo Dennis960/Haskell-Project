@@ -34,10 +34,9 @@ It is written in Haskell.
 
 ### Story
 
-- Add new story elements in src/Story.hs inside the stories array. Each story corresponds to a room.
-- It needs a secret key and a hint. The secret key is the String that the user needs to input to progress. The hint is a string that is displayed to the user when they enter the room.
+- Add new story elements in src/Story.hs inside the stories array. The stories array defines the order in which stories, terminals and rooms are shown.
+- It needs a secret key. The secret key is the String that the user needs to input to progress.
 - The secret key can be used inside the story by writing `$SECRET`. It gets encrypted with the encryption function of the room.
-- The hint can be used inside the story by writing `$HINT`.
 
 ### KeyEvents
 
@@ -49,7 +48,7 @@ It is written in Haskell.
 
 ### StringReplace
 
-- Contains a helper function for replacing substrings. Used for replacing `$SECRET` and `$HINT` in the story.
+- Contains a helper function for replacing substrings. Used for replacing `$SECRET` in the story.
 
 ### Main
 
@@ -60,10 +59,10 @@ It is written in Haskell.
 
 - /.devcontainer: Contains the devcontainer configuration for VS-Code
 - /.vscode: Contains the task for building and running the game
-- .git*: Git configuration
+- .git\*: Git configuration
 - README.md: This file
->
+
 #### Temporary files
->
+
 - /build: Contains build files produced by the build task
 - /dist: Contains the compiled game executable and the rooms directory

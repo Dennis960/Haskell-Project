@@ -13,7 +13,6 @@ import Typer (putTextNl)
 
 data Story = Story
   { storyText :: [String],
-    storyHint :: String,
     storySecret :: String,
     storyCypherFunction :: Maybe (String -> String),
     nextRoomName :: Maybe String
@@ -35,7 +34,6 @@ stories =
             "Du legst das Tagebuch beiseite und gehst zur Tür.",
             "(Enter drücken zum Fortfahren)"
           ],
-        storyHint = "",
         storySecret = "",
         storyCypherFunction = Nothing,
         nextRoomName = Just "passage"
@@ -44,11 +42,10 @@ stories =
       { storyText =
           [ "Am Türgriff liest du folgenden Text:",
             "$SECRET",
-            "$HINT",
+            "Caesar Shift 3",
             "Daneben ist ein Terminal, in welches du einen Text eingeben kannst.",
             ">>"
           ],
-        storyHint = "Caesar Shift 3",
         storySecret = "Willkommen im Spiel",
         storyCypherFunction = Just (`caeserCipher` 3),
         nextRoomName = Nothing
@@ -62,7 +59,6 @@ stories =
             "Ich habe nur Gerüchte gehört, aber es heißt, dass das gesamte Gebäude sofort einstürtzen würde, wenn man einen Raum betritt, ohne das vorherige Rätsel gelöst zu haben.",
             "Damit wäre die Weltformel für immer verloren.»"
           ],
-        storyHint = "",
         storySecret = "",
         storyCypherFunction = Nothing,
         nextRoomName = Just "passage_corner"
@@ -71,7 +67,6 @@ stories =
       { storyText =
           [ ""
           ],
-        storyHint = "",
         storySecret = "",
         storyCypherFunction = Nothing,
         nextRoomName = Nothing
@@ -91,23 +86,15 @@ replaceStorySecret story@Story {storyCypherFunction = Just cypherFunction, story
     replaceSecret [] = []
     replaceSecret (x : xs) = replaceSubstring x "$SECRET" (cypherFunction secret) : replaceSecret xs
 
--- | Replaces the "HINT" placeholder in the story with the actual hint text
-replaceStoryHint :: Story -> Story
-replaceStoryHint story = story {storyText = replaceHint (storyText story)}
-  where
-    replaceHint :: [String] -> [String]
-    replaceHint [] = []
-    replaceHint (x : xs) = replaceSubstring x "$HINT" (storyHint story) : replaceHint xs
-
 -- | Prints the story text to the console.
 printStory :: Story -> IO ()
 printStory Story {storyText = text} = mapM_ putTextNl text
 
--- | Prints the story to the console. Replaces the "SECRET" and "HINT" placeholders with the actual secret and hint text.
+-- | Prints the story to the console. Replaces the "SECRET" placeholder with the actual secret and hint text.
 tellStory :: Story -> IO ()
 tellStory story = do
   disableInputEcho
-  printStory $ replaceStoryHint $ replaceStorySecret story
+  printStory $ replaceStorySecret story
   enableInputEcho
 
 -- | Waits for the user to enter the correct solution for the given story.
