@@ -17,8 +17,7 @@ defaultTypingDelay :: Int
 defaultTypingDelay = 50000
 
 data Story = Story
-  { storyNumber :: Int,
-    storyText :: [String],
+  { storyText :: [String],
     storyHint :: String,
     storySecret :: String,
     storyCypherFunction :: Maybe (String -> String),
@@ -29,8 +28,7 @@ data Story = Story
 stories :: [Story]
 stories =
   [ Story
-      { storyNumber = 1,
-        storyText =
+      { storyText =
           [ "«Ich bin so kurz vor meinem Ziel.",
             "Ich spüre die utlimative Weltformel schon in meinen Händen.",
             "Mein ganzes Leben hat mich auf diesen Moment vorbereitet.",
@@ -48,8 +46,7 @@ stories =
         nextRoomName = Just "passage"
       },
     Story
-      { storyNumber = 2,
-        storyText =
+      { storyText =
           [ "Am Türgriff liest du folgenden Text:",
             "$SECRET",
             "$HINT",
@@ -62,8 +59,7 @@ stories =
         nextRoomName = Nothing
       },
     Story
-      { storyNumber = 3,
-        storyText =
+      { storyText =
           [ "Mit einem lauten Krachen öffnet sich die alte Tür. Du gehst hindurch und merkst, wie die Luft deutlich kühler wird. Die Tür hinter dir schließt sich.",
             "Zum Glück hast du das Tagebuch nicht liegen gelassen.",
             "",
@@ -77,8 +73,7 @@ stories =
         nextRoomName = Just "passage_corner"
       },
     Story
-      { storyNumber = 4,
-        storyText =
+      { storyText =
           [ ""
           ],
         storyHint = "",
@@ -106,11 +101,7 @@ putTextNl (c : text) = do
 
 -- | Returns the story with the given number from the stories list, if it exists
 getStory :: Int -> Story
-getStory a
-  | null filterStoriesWithNumber = error "Story not found"
-  | otherwise = head filterStoriesWithNumber
-  where
-    filterStoriesWithNumber = filter (\s -> storyNumber s == a) stories
+getStory a = if a <= length stories then stories !! (a - 1) else error "Story does not exist"
 
 -- | Replaces the "SECRET" placeholder in the story with the actual secret text
 replaceStorySecret :: Story -> Story
