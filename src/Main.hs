@@ -1,44 +1,44 @@
-import KeyEvents (Direction (..), getDirectionKey)
+import GameLoopElement
+  ( GameLoopElement (RoomItem, StorySecretItem, StoryTextItem),
+    RoomElement (roomName),
+    tellStory,
+    waitForStorySolution,
+  )
+import KeyEvents (Direction (..), getDirectionKey, waitForEnterKey)
 import Room (Room, isPlayerTouchingStory, loadRoom, printRoom, roomDirectionMovePlayer)
-import Story (Story (nextRoomName), getStory, tellStory, waitForStorySolution)
+import Story (getGameLoopElement)
 
-data GameState = GameState
-  { storyNumber :: Maybe Int,
-    nextStoryNumber :: Int,
-    roomName :: Maybe String
+newtype GameState = GameState
+  { gameElementNumber :: Int
   }
   deriving (Show)
 
-loopPlayerInsideRoom :: GameState -> Room -> IO ()
-loopPlayerInsideRoom gameState room = do
+loopPlayerInsideRoom :: Room -> IO ()
+loopPlayerInsideRoom room = do
   direction <- getDirectionKey
   let newRoom = roomDirectionMovePlayer room direction
   printRoom newRoom
   if isPlayerTouchingStory newRoom
     then do
-      run (GameState {storyNumber = Just (nextStoryNumber gameState), nextStoryNumber = nextStoryNumber gameState + 1, roomName = Nothing})
+      return ()
     else do
-      loopPlayerInsideRoom gameState newRoom
-
-loopStoryTime :: GameState -> Int -> IO ()
-loopStoryTime gameState storyNumber = do
-  let story = getStory storyNumber
-  tellStory story
-  waitForStorySolution story
-  case nextRoomName story of
-    Nothing -> run (GameState {storyNumber = Just (storyNumber + 1), nextStoryNumber = storyNumber + 2, roomName = Nothing})
-    Just nextRoomName -> run (GameState {storyNumber = Nothing, nextStoryNumber = nextStoryNumber gameState, roomName = Just nextRoomName})
+      loopPlayerInsideRoom newRoom
 
 run :: GameState -> IO ()
-run gameState = do
-  case gameState of
-    GameState {storyNumber = Just storyNumber, roomName = Nothing} -> do
-      loopStoryTime gameState storyNumber
-    GameState {storyNumber = Nothing, roomName = Just roomName} -> do
-      room <- loadRoom roomName
+run gameState@(GameState gameElementNumber) = do
+  let gameLoopElement = getGameLoopElement gameElementNumber
+  case gameLoopElement of
+    StorySecretItem storySecret -> do
+      tellStory (StorySecretItem storySecret)
+      waitForStorySolution (StorySecretItem storySecret)
+    StoryTextItem storyText -> do
+      tellStory (StoryTextItem storyText)
+      waitForEnterKey
+    RoomItem roomElement -> do
+      room <- loadRoom (roomName roomElement)
       printRoom room
-      loopPlayerInsideRoom gameState room
-    _ -> do
-      error "Invalid game state"
+      loopPlayerInsideRoom room
 
-main = run (GameState {storyNumber = Just 1, nextStoryNumber = 2, roomName = Nothing})
+  run (GameState {gameElementNumber = gameElementNumber + 1})
+
+main = run (GameState 1)

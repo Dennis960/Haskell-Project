@@ -5,9 +5,11 @@ module KeyEvents
     getDirectionKey,
     enableInputEcho,
     disableInputEcho,
+    waitForEnterKey,
   )
 where
 
+import Control.Monad (unless)
 import System.IO (BufferMode (LineBuffering, NoBuffering), hReady, hSetBuffering, hSetEcho, stdin)
 
 data Direction = DirectionUp | DirectionDown | DirectionLeft | DirectionRight | DirectionNone deriving (Show)
@@ -55,3 +57,10 @@ getDirectionKey = do
   direction <- keyToDirection <$> getKey
   enableInputEcho
   return direction
+
+waitForEnterKey :: IO ()
+waitForEnterKey = do
+  disableInputEcho
+  key <- getKey
+  enableInputEcho
+  unless (key == "\n") waitForEnterKey

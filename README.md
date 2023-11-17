@@ -25,7 +25,7 @@ It is written in Haskell.
 
 ### Room
 
-- Create new rooms in the src/rooms directory. Rooms are loaded incrementally, room1.txt, room2.txt, room3.txt, etc.
+- Create new rooms in the src/rooms directory. Rooms are loaded by name, room_passage.txt, room_other_name.txt, etc.
 - New Room-Cells can be added inside src/Room.hs. The Room-Cells need to correspond to the symbols used in the room files.
 
 ### Encryption functions
@@ -34,9 +34,13 @@ It is written in Haskell.
 
 ### Story
 
-- Add new story elements in src/Story.hs inside the stories array. The stories array defines the order in which stories, terminals and rooms are shown.
-- It needs a secret key. The secret key is the String that the user needs to input to progress.
-- The secret key can be used inside the story by writing `$SECRET`. It gets encrypted with the encryption function of the room.
+- Add new story elements in src/Story.hs inside the gameLoopElements array. The gameLoopElements array defines the order in which stories, terminals and rooms are shown.
+- StorySecretItem needs a secret key. The secret key is the String that the user needs to input to progress.
+- The secret key can be used inside the storyText by writing `$SECRET`. It gets encrypted with the specified encryption function.
+
+### GameLoopElement
+
+- Specify GameLoop Element types here, as well as useful functions for printing and managing the elements.
 
 ### KeyEvents
 
