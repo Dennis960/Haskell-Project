@@ -1,7 +1,6 @@
-import KeyEvents (Direction (..), getDirectionKey, getKey)
+import KeyEvents (Direction (..), getDirectionKey)
 import Room (Room, isPlayerTouchingStory, loadRoom, printRoom, roomDirectionMovePlayer)
 import Story (Story (nextRoomName), getStory, waitForStorySolution, tellStory)
-import System.IO (hFlush, stdout)
 
 data GameState = GameState
   { storyNumber :: Maybe Int,
