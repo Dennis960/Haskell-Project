@@ -74,6 +74,10 @@ printRoom room = do
     printCell :: Cell -> String
     printCell cell = if cellPosition cell == playerPosition room then playerSymbol else show (cellType cell)
 
+-- | Clears as many lines in the console as there are rows in the given room.
+clearRoom :: Room -> IO ()
+clearRoom room = putStr ("\ESC[" ++ show (length (roomCells room)) ++ "A")
+
 -- | Moves the player in the given room in the given direction. If the player cannot move in that direction, the room is returned unchanged.
 roomDirectionMovePlayer :: Room -> Direction -> Room
 roomDirectionMovePlayer room@Room {playerPosition} direction =
@@ -99,6 +103,7 @@ loopPlayerInsideRoom :: Room -> IO ()
 loopPlayerInsideRoom room = do
   direction <- getDirectionKey
   let newRoom = roomDirectionMovePlayer room direction
+  clearRoom room
   printRoom newRoom
   if isPlayerTouchingStory newRoom
     then do
