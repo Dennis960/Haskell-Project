@@ -44,8 +44,7 @@ gameLoopElements =
             [ "Am Türgriff liest du folgenden Text:",
               "$SECRET",
               "Caesar Shift 3",
-              "Daneben ist ein Terminal, in welches du einen Text eingeben kannst.",
-              ">>" -- TODO put the terminal arrows inside the waitForStorySolution function
+              "Daneben ist ein Terminal, in welches du einen Text eingeben kannst."
             ],
           storySecret = "Willkommen im Spiel",
           storyCypherFunction = (`caeserCipher` 3)

@@ -1,7 +1,9 @@
 module GameLoopElement where
 
+import GHC.IO.Handle (hFlush)
 import KeyEvents (disableInputEcho, enableInputEcho)
 import StringReplace (replaceSubstring)
+import System.IO (stdout)
 import Typer (putTextNl)
 
 data StorySecret = StorySecret
@@ -48,6 +50,8 @@ tellStory gameLoopElement@(StoryTextItem _) = do
 -- | Waits for the user to enter the correct solution for the given story.
 waitForStorySolution :: GameLoopElement -> IO ()
 waitForStorySolution story = do
+  putStr ">> "
+  hFlush stdout
   input <- getLine
   if isStoryInputCorrect story input
     then do
