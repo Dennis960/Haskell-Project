@@ -1,5 +1,5 @@
 import GameLoopElement
-  ( GameLoopElement (RoomItem, StorySecretItem, StoryTextItem),
+  ( GameLoopElement (RoomItem, StorySecretItem, StoryTextItem, WaitForEnterKeyItem),
     RoomElement (roomName),
     tellStory,
     waitForStorySolution,
@@ -22,11 +22,13 @@ run gameState@(GameState gameElementNumber) = do
       waitForStorySolution (StorySecretItem storySecret)
     StoryTextItem storyText -> do
       tellStory (StoryTextItem storyText)
-      waitForEnterKey
     RoomItem roomElement -> do
       room <- loadRoom (roomName roomElement)
       printRoom room
       loopPlayerInsideRoom room
+    WaitForEnterKeyItem -> do
+      putStrLn "(Enter drücken zum Fortfahren)"
+      waitForEnterKey
 
   run (GameState {gameElementNumber = gameElementNumber + 1})
 

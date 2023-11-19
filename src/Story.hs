@@ -30,10 +30,10 @@ gameLoopElements =
               "Ich weiß, was sie bedeutet. Der große Meister hatte schon immer eine Vorliebe für Verschlüsselungen.",
               "Ich muss nur jeden Buchstaben des Schlüssels um drei Stellen im Alphabet verschieben, dann öffnet sich die Tür.»",
               "",
-              "Du legst das Tagebuch beiseite und gehst zur Tür.",
-              "(Enter drücken zum Fortfahren)" -- TODO put this functionality somewhere else
+              "Du legst das Tagebuch beiseite und gehst zur Tür."
             ]
         },
+    WaitForEnterKeyItem,
     RoomItem
       RoomElement
         { roomName = "passage"
@@ -60,6 +60,7 @@ gameLoopElements =
               "Damit wäre die Weltformel für immer verloren.»"
             ]
         },
+    WaitForEnterKeyItem,
     RoomItem
       RoomElement
         { roomName = "passage_corner"

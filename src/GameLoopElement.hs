@@ -20,7 +20,7 @@ newtype RoomElement = RoomElement
   { roomName :: String
   }
 
-data GameLoopElement = StoryTextItem StoryText | StorySecretItem StorySecret | RoomItem RoomElement
+data GameLoopElement = StoryTextItem StoryText | StorySecretItem StorySecret | RoomItem RoomElement | WaitForEnterKeyItem
 
 -- | Replaces the "SECRET" placeholder in the StorySecret with the actual secret text
 replaceStorySecret :: StorySecret -> StorySecret
