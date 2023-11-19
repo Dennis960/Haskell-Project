@@ -33,6 +33,12 @@ run gameState@(GameState gameElementNumber) = do
 
   run (GameState {gameElementNumber = gameElementNumber + 1})
 
+data PlayMode = PlayMode | CheatMode deriving (Show, Eq)
+
 main = do
-  startIndex <- selectOption "Wähle ein GameLoopElement" gameLoopElementsWithType
+  playMode <- selectOption "Wähle einen Spielmodus" [(PlayMode, "Normal"), (CheatMode, "Cheat")]
+  startIndex <-
+    if playMode == CheatMode
+      then selectOption "(Cheat Modus aktiviert) Wähle einen Startpunkt" gameLoopElementsWithType
+      else return 1
   run (GameState {gameElementNumber = startIndex})
