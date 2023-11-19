@@ -99,6 +99,7 @@ roomPositionGetCell room (x, y) = roomCells room !! y !! x
 isPlayerTouchingStory :: Room -> Bool
 isPlayerTouchingStory room = cellType (roomPositionGetCell room (playerPosition room)) == STORY
 
+-- | Looping function that moves the player in the given room until the player is touching a story cell.
 loopPlayerInsideRoom :: Room -> IO ()
 loopPlayerInsideRoom room = do
   direction <- getDirectionKey
