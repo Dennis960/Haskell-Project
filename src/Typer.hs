@@ -1,4 +1,4 @@
-module Typer where
+module Typer (putTextNl) where
 
 import Control.Concurrent (threadDelay)
 import KeyEvents (getKey, hasKey)

@@ -4,8 +4,8 @@ import GameLoopElement
     tellStory,
     waitForStorySolution,
   )
-import KeyEvents (Direction (..), waitForEnterKey)
-import Room (Room, loadRoom, loopPlayerInsideRoom, printRoom)
+import KeyEvents (waitForEnterKey)
+import Room (loadRoom, loopPlayerInsideRoom, printRoom)
 import Story (getGameLoopElement)
 
 newtype GameState = GameState
