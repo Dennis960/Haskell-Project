@@ -25,7 +25,7 @@ It is written in Haskell.
 
 ### Room
 
-- Create new rooms in the src/rooms directory. Rooms are loaded by name, room_passage.txt, room_other_name.txt, etc.
+- Create new rooms in the src/rooms directory. Rooms are loaded by name, room_passage, room_other_name, etc.
 - New Room-Cells can be added inside src/Room.hs. The Room-Cells need to correspond to the symbols used in the room files.
 
 ### Encryption functions

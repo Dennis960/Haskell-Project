@@ -64,6 +64,18 @@ gameLoopElements =
     RoomItem
       RoomElement
         { roomName = "room_passage_corner"
+        },
+    StoryTextItem
+      StoryText
+        { storyTextText =
+            [ "Als du um die Ecke biegst, merkst du nicht, wie du auf eine Falltür trittst.",
+              "Du fällst in die Tiefe, doch du landest weich."
+            ]
+        },
+    WaitForEnterKeyItem,
+    RoomItem
+      RoomElement
+        { roomName = "room_cave"
         }
   ]
 

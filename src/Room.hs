@@ -41,10 +41,10 @@ data Room = Room
 
 playerSymbol = "P"
 
--- | Returns the room with the given number by loading room1.txt, room2.txt, etc. from rooms/
+-- | Returns the room with the given name from rooms/
 loadRoom :: String -> IO Room
 loadRoom a = do
-  let path = "rooms/" ++ a ++ ".txt"
+  let path = "rooms/" ++ a
   handle <- openFile path ReadMode
   roomString <- hGetContents handle
   let cells = parseRoom roomString
