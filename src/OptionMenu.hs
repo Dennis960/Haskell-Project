@@ -28,6 +28,7 @@ selectOption message list = do
   disableInputEcho
   printOptions message 1 list
   selectedOption <- selectOption' message 1 list
+  clearLines (length list + 2)
   enableInputEcho
   return selectedOption
   where
