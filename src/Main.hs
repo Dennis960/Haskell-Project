@@ -4,25 +4,14 @@ import GameLoopElement
     tellStory,
     waitForStorySolution,
   )
-import KeyEvents (Direction (..), getDirectionKey, waitForEnterKey)
-import Room (Room, isPlayerTouchingStory, loadRoom, printRoom, roomDirectionMovePlayer)
+import KeyEvents (Direction (..), waitForEnterKey)
+import Room (Room, loadRoom, loopPlayerInsideRoom, printRoom)
 import Story (getGameLoopElement)
 
 newtype GameState = GameState
   { gameElementNumber :: Int
   }
   deriving (Show)
-
-loopPlayerInsideRoom :: Room -> IO ()
-loopPlayerInsideRoom room = do
-  direction <- getDirectionKey
-  let newRoom = roomDirectionMovePlayer room direction
-  printRoom newRoom
-  if isPlayerTouchingStory newRoom
-    then do
-      return ()
-    else do
-      loopPlayerInsideRoom newRoom
 
 run :: GameState -> IO ()
 run gameState@(GameState gameElementNumber) = do

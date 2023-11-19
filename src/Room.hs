@@ -2,12 +2,11 @@ module Room
   ( Room,
     loadRoom,
     printRoom,
-    roomDirectionMovePlayer,
-    isPlayerTouchingStory,
+    loopPlayerInsideRoom,
   )
 where
 
-import KeyEvents (Direction (..))
+import KeyEvents (Direction (..), getDirectionKey)
 import System.IO (IOMode (ReadMode), hGetContents, openFile)
 
 data CellType = WALL | STORY | PLAYER_INIT | EMPTY deriving (Eq)
@@ -95,3 +94,14 @@ roomPositionGetCell room (x, y) = roomCells room !! y !! x
 -- | Returns True if the player is touching a story cell in the given room.
 isPlayerTouchingStory :: Room -> Bool
 isPlayerTouchingStory room = cellType (roomPositionGetCell room (playerPosition room)) == STORY
+
+loopPlayerInsideRoom :: Room -> IO ()
+loopPlayerInsideRoom room = do
+  direction <- getDirectionKey
+  let newRoom = roomDirectionMovePlayer room direction
+  printRoom newRoom
+  if isPlayerTouchingStory newRoom
+    then do
+      return ()
+    else do
+      loopPlayerInsideRoom newRoom
