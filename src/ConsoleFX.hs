@@ -1,6 +1,7 @@
 module ConsoleFX (staticForSeconds) where
 
 import Control.Concurrent (threadDelay)
+import KeyEvents (disableInputEcho, enableInputEcho)
 
 grayscale :: String
 grayscale = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. "
@@ -39,7 +40,10 @@ randomScreen width height screenNumber = [randomString width ((screenNumber * wi
 
 -- | quickly prints a box of random characters giving the apperance of a static screen with the given width and height for the given number of seconds
 staticForSeconds :: Int -> Int -> Float -> IO ()
-staticForSeconds width height seconds = staticForTimes width height (round (seconds * fromIntegral targetFps))
+staticForSeconds width height seconds = do
+  disableInputEcho
+  staticForTimes width height (round (seconds * fromIntegral targetFps))
+  enableInputEcho
   where
     staticForTimes :: Int -> Int -> Int -> IO ()
     staticForTimes width height 0 = printScreen (randomScreen width height 0)

@@ -59,6 +59,14 @@ It is written in Haskell.
 - Contains the main function. Loads the rooms, the story and the key events and starts the game.
 - Runs the main game loop.
 
+### OptionMenu
+
+- Contains functions for printing out and letting the user select options.
+
+### ConsoleFX
+
+- Contains functions for printing special effects.
+
 ### Other files
 
 - /.devcontainer: Contains the devcontainer configuration for VS-Code

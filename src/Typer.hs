@@ -1,4 +1,4 @@
-module Typer (putTextNl) where
+module Typer (putTextNl, clearLines) where
 
 import Control.Concurrent (threadDelay)
 import KeyEvents (getKey, hasKey)
@@ -22,3 +22,10 @@ putTextNl (c : text) = do
     else do
       threadDelay defaultTypingDelay
       putTextNl text
+
+-- | Clears the given number of lines in the console
+clearLines :: Int -> IO ()
+clearLines n = do
+  putStr "\r"
+  putStr $ "\ESC[" ++ show n ++ "A" -- move the cursor n lines up
+  putStr "\ESC[J" -- clear the screen from the cursor position to the end of the screen

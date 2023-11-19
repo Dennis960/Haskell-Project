@@ -1,5 +1,6 @@
 module Story
   ( getGameLoopElement,
+    gameLoopElementsWithType,
   )
 where
 
@@ -80,8 +81,7 @@ gameLoopElements =
     StoryTextItem
       StoryText
         { storyTextText =
-            [
-              "Hier scheint irgendeine Art von Tür zu sein.",
+            [ "Hier scheint irgendeine Art von Tür zu sein.",
               "Es ist gerade so hell genug, dass du im Tagebuch lesen kannst.",
               "Du fragst dich allerdings, wo das Licht herkommt, denn du siehst keine Fenster in der Nähe.",
               "",
@@ -103,3 +103,12 @@ gameLoopElements =
 -- | Returns the gameLoopElement with the given number from the gameLoopElements list, if it exists
 getGameLoopElement :: Int -> GameLoopElement
 getGameLoopElement a = if a <= length gameLoopElements then gameLoopElements !! (a - 1) else error "GameLoopElement does not exist"
+
+gameLoopElementsWithType :: [(Int, String)]
+gameLoopElementsWithType = zip [1 ..] (map getGameLoopElementType gameLoopElements)
+  where
+    getGameLoopElementType :: GameLoopElement -> String
+    getGameLoopElementType (StoryTextItem _) = "Story"
+    getGameLoopElementType (StorySecretItem _) = "Secret"
+    getGameLoopElementType (RoomItem _) = "Room"
+    getGameLoopElementType WaitForEnterKeyItem = "WaitForEnterKey"

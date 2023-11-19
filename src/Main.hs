@@ -5,8 +5,9 @@ import GameLoopElement
     waitForStorySolution,
   )
 import KeyEvents (waitForEnterKey)
+import OptionMenu (selectOption)
 import Room (loadRoom, loopPlayerInsideRoom, printRoom)
-import Story (getGameLoopElement)
+import Story (gameLoopElementsWithType, getGameLoopElement)
 
 newtype GameState = GameState
   { gameElementNumber :: Int
@@ -32,4 +33,6 @@ run gameState@(GameState gameElementNumber) = do
 
   run (GameState {gameElementNumber = gameElementNumber + 1})
 
-main = run (GameState 1)
+main = do
+  startIndex <- selectOption "Wähle ein GameLoopElement" gameLoopElementsWithType
+  run (GameState {gameElementNumber = startIndex})

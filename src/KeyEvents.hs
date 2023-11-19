@@ -6,6 +6,7 @@ module KeyEvents
     enableInputEcho,
     disableInputEcho,
     waitForEnterKey,
+    keyToDirection,
   )
 where
 
