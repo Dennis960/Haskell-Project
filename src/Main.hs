@@ -35,6 +35,7 @@ run gameState@(GameState gameElementNumber) = do
 
 data PlayMode = PlayMode | CheatMode deriving (Show, Eq)
 
+main :: IO ()
 main = do
   playMode <- selectOption "Wähle einen Spielmodus" [(PlayMode, "Normal"), (CheatMode, "Cheat")]
   startIndex <-
