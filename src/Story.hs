@@ -110,5 +110,5 @@ gameLoopElementsWithType = zip [1 ..] (map getGameLoopElementType gameLoopElemen
     getGameLoopElementType :: GameLoopElement -> String
     getGameLoopElementType (StoryTextItem _) = "Story"
     getGameLoopElementType (StorySecretItem _) = "Secret"
-    getGameLoopElementType (RoomItem _) = "Room"
+    getGameLoopElementType (RoomItem RoomElement {roomName}) = "Room (" ++ roomName ++ ")"
     getGameLoopElementType WaitForEnterKeyItem = "WaitForEnterKey"
