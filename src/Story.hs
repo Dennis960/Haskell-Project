@@ -36,7 +36,7 @@ gameLoopElements =
     WaitForEnterKeyItem,
     RoomItem
       RoomElement
-        { roomName = "passage"
+        { roomName = "room_passage"
         },
     StorySecretItem
       StorySecret
@@ -63,7 +63,7 @@ gameLoopElements =
     WaitForEnterKeyItem,
     RoomItem
       RoomElement
-        { roomName = "passage_corner"
+        { roomName = "room_passage_corner"
         }
   ]
 
