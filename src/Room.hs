@@ -6,6 +6,7 @@ module Room
   )
 where
 
+import ConsoleFX (staticForSeconds)
 import KeyEvents (Direction (..), getDirectionKey)
 import System.IO (IOMode (ReadMode), hGetContents, openFile)
 
@@ -108,8 +109,11 @@ loopPlayerInsideRoom room = do
   let newRoom = roomDirectionMovePlayer room direction
   clearRoom room
   printRoom newRoom
-  if isPlayerTouchingStory newRoom
-    then do
+  case cellType (roomPositionGetCell newRoom (playerPosition newRoom)) of
+    TRAP -> do
+      clearRoom newRoom
+      let (roomWidth, roomHeight) = (length (head (roomCells room)), length (roomCells room))
+      staticForSeconds roomWidth roomHeight 1
       return ()
-    else do
-      loopPlayerInsideRoom newRoom
+    STORY -> return ()
+    _ -> loopPlayerInsideRoom newRoom
