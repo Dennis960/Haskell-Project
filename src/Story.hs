@@ -76,6 +76,27 @@ gameLoopElements =
     RoomItem
       RoomElement
         { roomName = "room_cave"
+        },
+    StoryTextItem
+      StoryText
+        { storyTextText =
+            [
+              "Hier scheint irgendeine Art von Tür zu sein.",
+              "Es ist gerade so hell genug, dass du im Tagebuch lesen kannst.",
+              "Du fragst dich allerdings, wo das Licht herkommt, denn du siehst keine Fenster in der Nähe.",
+              "",
+              "«Ich habe es geschafft. Ich habe die Weltformel gefunden.",
+              "Ich rieche sie, ich schmecke sie.",
+              "Die anderen haben mich für verrückt erklärt, aber ich bin mir sicher, dass dieser Fund sie vom Gegenteil überzeugen wird.»",
+              "",
+              "Du blätterst weiter.",
+              "",
+              "«Nein! Das darf nicht wahr sein!",
+              "Wie konnte ich nur so dumm sein?",
+              "Ich hätte den Raum auf Falltüren untersuchen sollen.»",
+              "",
+              "Du ärgerst dich, dass du dich an diese Stelle nicht erinnert hast."
+            ]
         }
   ]
 

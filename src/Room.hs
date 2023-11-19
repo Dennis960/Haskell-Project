@@ -9,7 +9,7 @@ where
 import KeyEvents (Direction (..), getDirectionKey)
 import System.IO (IOMode (ReadMode), hGetContents, openFile)
 
-data CellType = WALL | STORY | PLAYER_INIT | EMPTY deriving (Eq)
+data CellType = WALL | STORY | PLAYER_INIT | EMPTY | TRAP deriving (Eq)
 
 data Cell = Cell
   { cellType :: CellType,
@@ -23,6 +23,7 @@ instance Read CellType where
   readsPrec _ value = case value of
     "█" -> [(WALL, "")]
     "?" -> [(STORY, "")]
+    "T" -> [(TRAP, "")]
     "P" -> [(PLAYER_INIT, "")]
     _ -> [(EMPTY, "")]
 
@@ -31,6 +32,7 @@ instance Show CellType where
     WALL -> "█"
     STORY -> "?"
     PLAYER_INIT -> " "
+    TRAP -> " "
     EMPTY -> " "
 
 data Room = Room
@@ -97,7 +99,7 @@ roomPositionGetCell room (x, y) = roomCells room !! y !! x
 
 -- | Returns True if the player is touching a story cell in the given room.
 isPlayerTouchingStory :: Room -> Bool
-isPlayerTouchingStory room = cellType (roomPositionGetCell room (playerPosition room)) == STORY
+isPlayerTouchingStory room = cellType (roomPositionGetCell room (playerPosition room)) == STORY || cellType (roomPositionGetCell room (playerPosition room)) == TRAP
 
 -- | Looping function that moves the player in the given room until the player is touching a story cell.
 loopPlayerInsideRoom :: Room -> IO ()
