@@ -12,14 +12,13 @@ It is written in Haskell.
 - open the project in the devcontainer (F1 -Dev Containers: Open Folder in Container) (Might take a while the first time)
 - run the "build and run" task (F1 -Tasks: Run Task -build and run)
 
-### Manual installation without installing Docker (Windows, not tested)
+### Manual installation without installing Docker (Only Linux)
 
 - install the Haskell Tool Stack
-- create a dist directory in the project directory
-- copy the src/rooms directory into the dist directory
-- cd into the project directory with the terminal
-- run `ghc -o dist/main -isrc src/main.hs -outputdir build`
-- run `dist/main` by double clicking the file
+- Run the build and run task or
+- run `mkdir -p dist;ghc -o dist/main -isrc src/Main.hs -outputdir build;cp -r src/rooms dist/.;cd dist;./main` in the project root directory
+- run `./dist/main`
+- if that does not work: `chmod +x dist/main;./dist/main`
 
 ## Project structure and how to add new content
 
