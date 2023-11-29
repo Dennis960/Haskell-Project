@@ -12,15 +12,15 @@ putTextNl :: String -> IO ()
 putTextNl [] = putStrLn "\n"
 putTextNl (c : text) = do
   putStr [c]
-  -- hFlush stdout -- flush the buffer, used to immediately print the character instead of waiting for a newline
-  threadDelay 1
-  putTextNl text
-  -- keycode <- getKeyCodeNonBlocking
-  -- if keycode == KeyCodeEnter
-  --   then do
-  --     putStr text -- print immediately if enter key is pressed
-  --     putTextNl ""
-  --   else do
+  hFlush stdout -- flush the buffer, used to immediately print the character instead of waiting for a newline
+  keycode <- getKeyCodeNonBlocking
+  if keycode == KeyCodeEnter
+    then do
+      putStr text -- print immediately if enter key is pressed
+      putTextNl ""
+    else do
+      threadDelay defaultTypingDelay
+      putTextNl text
 
 -- | Clears the given number of lines in the console
 clearLines :: Int -> IO ()
