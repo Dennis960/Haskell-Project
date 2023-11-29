@@ -12,6 +12,12 @@ It is written in Haskell.
 - open the project in the devcontainer (F1 -Dev Containers: Open Folder in Container) (Might take a while the first time)
 - run the "build and run" task (F1 -Tasks: Run Task -build and run)
 
+### Recommended installation only Docker
+
+- start a terminal in the project root directory
+- run `docker build -t haskell-project . && docker run -it haskell-project`
+- enjoy the game!
+
 ### Manual installation without installing Docker (Only Linux)
 
 - install the Haskell Tool Stack
