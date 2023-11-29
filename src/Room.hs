@@ -7,7 +7,7 @@ module Room
 where
 
 import ConsoleFX (staticForSeconds)
-import KeyEvents (Direction (..), getDirectionKey)
+import KeyEvents (KeyCode (KeyCodeDown, KeyCodeLeft, KeyCodeNotAvailable, KeyCodeRight, KeyCodeUp), getKeyCode)
 import System.IO (IOMode (ReadMode), hGetContents, openFile)
 
 data CellType = WALL | STORY | PLAYER_INIT | EMPTY | TRAP deriving (Eq)
@@ -82,14 +82,14 @@ clearRoom :: Room -> IO ()
 clearRoom room = putStr ("\ESC[" ++ show (length (roomCells room)) ++ "A")
 
 -- | Moves the player in the given room in the given direction. If the player cannot move in that direction, the room is returned unchanged.
-roomDirectionMovePlayer :: Room -> Direction -> Room
-roomDirectionMovePlayer room@Room {playerPosition} direction =
-  let newPlayerPosition = case direction of
-        DirectionUp -> (fst playerPosition, snd playerPosition - 1)
-        DirectionDown -> (fst playerPosition, snd playerPosition + 1)
-        DirectionLeft -> (fst playerPosition - 1, snd playerPosition)
-        DirectionRight -> (fst playerPosition + 1, snd playerPosition)
-        DirectionNone -> playerPosition
+roomDirectionMovePlayer :: Room -> KeyCode -> Room
+roomDirectionMovePlayer room@Room {playerPosition} keycode =
+  let newPlayerPosition = case keycode of
+        KeyCodeUp -> (fst playerPosition, snd playerPosition - 1)
+        KeyCodeDown -> (fst playerPosition, snd playerPosition + 1)
+        KeyCodeLeft -> (fst playerPosition - 1, snd playerPosition)
+        KeyCodeRight -> (fst playerPosition + 1, snd playerPosition)
+        KeyCodeNotAvailable -> playerPosition
    in case cellType (roomPositionGetCell room newPlayerPosition) of
         WALL -> room
         _ -> room {playerPosition = newPlayerPosition}
@@ -105,8 +105,8 @@ isPlayerTouchingStory room = cellType (roomPositionGetCell room (playerPosition 
 -- | Looping function that moves the player in the given room until the player is touching a story cell.
 loopPlayerInsideRoom :: Room -> IO ()
 loopPlayerInsideRoom room = do
-  direction <- getDirectionKey
-  let newRoom = roomDirectionMovePlayer room direction
+  keycode <- getKeyCode
+  let newRoom = roomDirectionMovePlayer room keycode
   clearRoom room
   printRoom newRoom
   case cellType (roomPositionGetCell newRoom (playerPosition newRoom)) of

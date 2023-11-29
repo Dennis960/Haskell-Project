@@ -1,21 +1,22 @@
 module KeyEvents
-  ( Direction (..),
-    hasKey,
-    getKey,
-    getDirectionKey,
+  ( KeyCode (..),
+    getKeyCode,
+    getKeyCodeNonBlocking,
+    hasPressedEnter,
     enableInputEcho,
     disableInputEcho,
-    waitForEnterKey,
-    keyToDirection,
+    waitForEnterKey
   )
 where
 
-import Control.Monad (unless)
-import System.IO (BufferMode (LineBuffering, NoBuffering), hReady, hSetBuffering, hSetEcho, stdin)
+import Control.Monad
+import System.IO
+import Foreign.Marshal.Alloc
+import Foreign.Storable
+import Data.Char
+import Foreign.C.Types
 
-data Direction = DirectionUp | DirectionDown | DirectionLeft | DirectionRight | DirectionNone deriving (Show)
-
-type Key = [Char]
+data KeyCode = KeyCodeUp | KeyCodeDown | KeyCodeLeft | KeyCodeRight | KeyCodeEnter | KeyCodeNotAvailable deriving (Show, Eq)
 
 -- | Enables input echo, which means that the user can see what they are typing and the input is buffered allowing the user to use backspace.
 enableInputEcho :: IO ()
@@ -32,36 +33,69 @@ disableInputEcho = do
 hasKey :: IO Bool
 hasKey = hReady stdin
 
--- | Returns a list of characters representing the key that the user has pressed. Blocks until the user presses any key
-getKey :: IO Key
+-- | Returns a character representing the key that the user has pressed. Blocks until the user presses any key
+getKey :: IO Char
 getKey = do
-  char <- getChar
-  more <- hReady stdin
-  if more
-    then (char :) <$> getKey
-    else do
-      return [char]
-
--- | Converts a key to a direction. If the key is not an arrow key, DirectionNone is returned.
-keyToDirection :: Key -> Direction
-keyToDirection key = case key of
-  "\ESC[A" -> DirectionUp
-  "\ESC[B" -> DirectionDown
-  "\ESC[C" -> DirectionRight
-  "\ESC[D" -> DirectionLeft
-  _ -> DirectionNone
-
--- | Returns the direction key that the user has pressed. Blocks until the user presses any key.
-getDirectionKey :: IO Direction
-getDirectionKey = do
   disableInputEcho
-  direction <- keyToDirection <$> getKey
+  c <- getChar
   enableInputEcho
-  return direction
+  clearBuffer
+  return c
 
+getKeyCode :: IO KeyCode
+getKeyCode = do
+  key <- getKey
+  return $ keyToKeyCode key
+
+-- | Converts a key to a key code. If the key is not supported, KeyCodeNotAvailable is returned.
+keyToKeyCode :: Char -> KeyCode
+keyToKeyCode key = case key of
+  'w' -> KeyCodeUp
+  's' -> KeyCodeDown
+  'd' -> KeyCodeRight
+  'a' -> KeyCodeLeft
+  '\n' -> KeyCodeEnter
+  ' ' -> KeyCodeEnter
+  '\r' -> KeyCodeEnter
+  _ -> KeyCodeNotAvailable
+
+-- | Returns the keycode of the key that the user has pressed. Blocks until the user presses any key.
+getKeyBlocking :: IO KeyCode
+getKeyBlocking = do
+  disableInputEcho
+  keycode <- keyToKeyCode <$> getKey
+  enableInputEcho
+  return keycode
+
+-- | Returns the keycode of the key that the user has pressed. Does not block if the user has not pressed any key.
+getKeyCodeNonBlocking :: IO KeyCode
+getKeyCodeNonBlocking = do
+  hasKey <- hasKey
+  if hasKey
+    then getKeyBlocking
+    else return KeyCodeNotAvailable
+
+-- | Waits for the user to press the enter key.
 waitForEnterKey :: IO ()
 waitForEnterKey = do
-  disableInputEcho
-  key <- getKey
-  enableInputEcho
-  unless (key == "\n") waitForEnterKey
+  keycode <- getKeyBlocking
+  if keycode == KeyCodeEnter
+    then return ()
+    else waitForEnterKey
+
+-- | Clears the input buffer for stdin.
+clearBuffer :: IO ()
+clearBuffer = do
+  hasKey <- hReady stdin
+  if hasKey
+    then do
+      hGetChar stdin
+      clearBuffer
+    else do
+      return ()
+
+-- | Returns true if the user has pressed the enter key.
+hasPressedEnter :: IO Bool
+hasPressedEnter = do
+  keycode <- getKeyCodeNonBlocking
+  return $ keycode == KeyCodeEnter

@@ -1,7 +1,7 @@
 module Typer (putTextNl, clearLines) where
 
 import Control.Concurrent (threadDelay)
-import KeyEvents (getKey, hasKey)
+import KeyEvents (getKeyCodeNonBlocking, KeyCode (KeyCodeEnter))
 import System.IO (hFlush, stdout)
 
 defaultTypingDelay :: Int
@@ -12,16 +12,15 @@ putTextNl :: String -> IO ()
 putTextNl [] = putStrLn "\n"
 putTextNl (c : text) = do
   putStr [c]
-  hFlush stdout -- flush the buffer, used to immediately print the character instead of waiting for a newline
-  isKeyPressed <- hasKey
-  if isKeyPressed
-    then do
-      getKey -- discard the key
-      putStr text -- print immediately if a key is pressed
-      putTextNl ""
-    else do
-      threadDelay defaultTypingDelay
-      putTextNl text
+  -- hFlush stdout -- flush the buffer, used to immediately print the character instead of waiting for a newline
+  threadDelay 1
+  putTextNl text
+  -- keycode <- getKeyCodeNonBlocking
+  -- if keycode == KeyCodeEnter
+  --   then do
+  --     putStr text -- print immediately if enter key is pressed
+  --     putTextNl ""
+  --   else do
 
 -- | Clears the given number of lines in the console
 clearLines :: Int -> IO ()

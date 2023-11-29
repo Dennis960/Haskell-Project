@@ -1,11 +1,10 @@
 module OptionMenu where
 
 import KeyEvents
-  ( Direction (DirectionDown, DirectionNone, DirectionUp),
+  ( KeyCode (KeyCodeUp, KeyCodeDown, KeyCodeLeft, KeyCodeRight, KeyCodeEnter, KeyCodeNotAvailable),
     disableInputEcho,
     enableInputEcho,
-    getKey,
-    keyToDirection,
+    getKeyCode,
   )
 import Typer (clearLines)
 
@@ -37,10 +36,9 @@ selectOption message list = do
     selectOption' selectedIndex list = do
       clearLines (length list)
       printOptions selectedIndex list
-      key <- getKey
-      case keyToDirection key of
-        DirectionUp -> selectOption' (max 1 (selectedIndex - 1)) list
-        DirectionDown -> selectOption' (min (length list) (selectedIndex + 1)) list
-        DirectionNone -> case key of
-          "\n" -> return $ fst (list !! (selectedIndex - 1))
-          _ -> selectOption' selectedIndex list
+      keycode <- getKeyCode
+      case keycode of
+        KeyCodeUp -> selectOption' (max 1 (selectedIndex - 1)) list
+        KeyCodeDown -> selectOption' (min (length list) (selectedIndex + 1)) list
+        KeyCodeEnter -> return $ fst (list !! (selectedIndex - 1))
+        _ -> selectOption' selectedIndex list
