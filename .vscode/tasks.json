@@ -6,7 +6,13 @@
         {
             "label": "build and run",
             "type": "shell",
-            "command": "mkdir -p dist;ghc -o dist/main -isrc src/Main.hs -outputdir build;cp -r src/rooms dist/.;cd dist;./main",
+            "command": "mkdir -p dist && ghc -o dist/main -isrc src/Main.hs -outputdir build && cp -r src/rooms dist/. && cd dist && ./main",
+            "problemMatcher": []
+        },
+        {
+            "label": "upload to docker hub",
+            "type": "shell",
+            "command": "docker login && docker tag haskell-project dennis960/haskell-project:latest && docker push dennis960/haskell-project:latest",
             "problemMatcher": []
         }
     ]

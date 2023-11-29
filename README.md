@@ -6,6 +6,15 @@ It is written in Haskell.
 
 ## Installation
 
+### Recommended installation using image on Docker Hub
+
+- install Docker Desktop or a similar Docker environment
+- run the docker daemon by starting the installed Docker Desktop application
+- open a command line terminal (cmd, powershell, bash, etc.)
+- run `docker pull dennis960/haskell-project:latest`
+- run `docker run -it dennis960/haskell-project:latest`
+- (for more information see [https://docs.docker.com/docker-hub/quickstart/](https://docs.docker.com/docker-hub/quickstart/))
+
 ### Recommended installation using VS-Code and Docker
 
 - install the devcontainer extension for VS-Code
