@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "src/**"
+      - ".github/workflows/build.docker.workflow.yml"
+  workflow_dispatch:
 
 jobs:
   build:
