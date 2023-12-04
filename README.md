@@ -8,32 +8,46 @@ It is written in Haskell.
 
 ### Recommended installation using image on Docker Hub
 
-- install Docker Desktop or a similar Docker environment
-- run the docker daemon by starting the installed Docker Desktop application
-- open a command line terminal (cmd, powershell, bash, etc.)
-- run `docker pull dennis960/haskell-project:latest`
-- run `docker run -it dennis960/haskell-project:latest`
-- (for more information see [https://docs.docker.com/docker-hub/quickstart/](https://docs.docker.com/docker-hub/quickstart/))
+- Install Docker Desktop or a similar Docker environment
+- Run the docker daemon (by starting the installed Docker Desktop application)
+- Open a command line terminal (cmd, powershell, bash, etc.)
+- Run `docker pull ghcr.io/dennis960/haskell-project:latest`
+- Run `docker run -it ghcr.io/dennis960/haskell-project:latest`
+- (For more information see [https://docs.docker.com/docker-hub/quickstart/](https://docs.docker.com/docker-hub/quickstart/))
 
-### Recommended installation using VS-Code and Docker
+### Manual installation using Visual Studio Code and Docker
 
-- install the devcontainer extension for VS-Code
-- open the project in the devcontainer (F1 -Dev Containers: Open Folder in Container) (Might take a while the first time)
-- run the "build and run" task (F1 -Tasks: Run Task -build and run)
-
-### Recommended installation only Docker
-
-- start a terminal in the project root directory
-- run `docker build -t haskell-project . && docker run -it haskell-project`
-- enjoy the game!
+- Clone the repository
+- Install the devcontainer extension for Visual Studio Code
+- Open the project in the devcontainer (F1 -Dev Containers: Open Folder in Container) (Might take a while the first time)
+- Run the "build and run" task (F1 -Tasks: Run Task -build and run)
 
 ### Manual installation without installing Docker (Only Linux)
 
-- install the Haskell Tool Stack
+- Clone the repository
+- Install the Haskell Tool Stack
+- Open the project in Visual Studio Code
 - Run the build and run task or
-- run `mkdir -p dist;ghc -o dist/main -isrc src/Main.hs -outputdir build;cp -r src/rooms dist/.;cd dist;./main` in the project root directory
-- run `./dist/main`
-- if that does not work: `chmod +x dist/main;./dist/main`
+- Run `mkdir -p dist;ghc -o dist/main -isrc src/Main.hs -outputdir build;cp -r src/rooms dist/.;cd dist;./main` in the project root directory
+- Run `./dist/main`
+- If that does not work: `chmod +x dist/main;./dist/main`
+
+## Development
+
+### Using Linux
+
+- Install the Haskell Tool Stack
+- Open the project in Visual Studio Code
+- Run the "build and run" task (F1 -Tasks: Run Task -build and run)
+
+### Using Windows
+
+- Install Docker Desktop or a similar Docker environment
+- Run the docker daemon by starting the installed Docker Desktop application
+
+- Install the devcontainer extension for Visual Studio Code
+- Open the project in the devcontainer (F1 -Dev Containers: Open Folder in Container) (Might take a while the first time)
+- Run the "build and run" task (F1 -Tasks: Run Task -build and run)
 
 ## Project structure and how to add new content
 
@@ -83,8 +97,8 @@ It is written in Haskell.
 
 ### Other files
 
-- /.devcontainer: Contains the devcontainer configuration for VS-Code
-- /.vscode: Contains the task for building and running the game
+- /.devcontainer: Contains the devcontainer configuration for Visual Studio Code
+- /.Visual Studio Code: Contains the task for building and running the game
 - .git\*: Git configuration
 - README.md: This file
 
