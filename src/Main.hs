@@ -7,7 +7,7 @@ import GameLoopElement
 import KeyEvents (waitForEnterKey)
 import OptionMenu (selectOption)
 import Room (loadRoom, loopPlayerInsideRoom, printRoom)
-import Story (gameLoopElementsWithType, getGameLoopElement)
+import Story (gameLoopElementsWithType, gameLoopElementsWithSolution, getGameLoopElement)
 
 newtype GameState = GameState
   { gameElementNumber :: Int
@@ -38,8 +38,17 @@ data PlayMode = PlayMode | CheatMode deriving (Show, Eq)
 main :: IO ()
 main = do
   playMode <- selectOption "Wähle einen Spielmodus" [(PlayMode, "Normal"), (CheatMode, "Cheat")]
+  
   startIndex <-
     if playMode == CheatMode
-      then selectOption "(Cheat Modus aktiviert) Wähle einen Startpunkt" gameLoopElementsWithType
+      then selectOption "(Cheat Modus aktiviert) Wähle einen Startpunkt" (gameLoopElementsWithType ++ [(-1, "Alle Lösungen anzeigen")])
       else return 1
+  if startIndex == -1 then do
+    putStrLn "Lösungen:"
+    mapM_ print gameLoopElementsWithSolution
+    putStrLn "(Enter drücken zum Fortfahren)"
+    waitForEnterKey
+    main
+  else do
+    return ()
   run (GameState {gameElementNumber = startIndex})

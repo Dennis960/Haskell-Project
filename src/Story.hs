@@ -1,6 +1,7 @@
 module Story
   ( getGameLoopElement,
     gameLoopElementsWithType,
+    gameLoopElementsWithSolution,
   )
 where
 
@@ -112,3 +113,13 @@ gameLoopElementsWithType = zip [1 ..] (map getGameLoopElementType gameLoopElemen
     getGameLoopElementType (StorySecretItem _) = "Secret"
     getGameLoopElementType (RoomItem RoomElement {roomName}) = "Room (" ++ roomName ++ ")"
     getGameLoopElementType WaitForEnterKeyItem = "WaitForEnterKey"
+
+gameLoopElementsWithSolution :: [(String, String)]
+gameLoopElementsWithSolution = filter (\(_, solution) -> solution /= "") (zip (map getGameLoopElementSecret gameLoopElements) (map getGameLoopElementSolution gameLoopElements))
+  where
+    getGameLoopElementSolution :: GameLoopElement -> String
+    getGameLoopElementSolution (StorySecretItem StorySecret {storySecret}) = storySecret
+    getGameLoopElementSolution _ = ""
+    getGameLoopElementSecret :: GameLoopElement -> String
+    getGameLoopElementSecret (StorySecretItem StorySecret {storySecret, storyCypherFunction}) = storyCypherFunction storySecret
+    getGameLoopElementSecret _ = ""
