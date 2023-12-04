@@ -6,7 +6,7 @@ It is written in Haskell.
 
 ## Installation
 
-### Recommended installation using image on Docker Hub
+### Recommended installation using image on GitHub Container Registry
 
 - Install Docker Desktop or a similar Docker environment
 - Run the docker daemon (by starting the installed Docker Desktop application)
@@ -48,6 +48,10 @@ It is written in Haskell.
 - Install the devcontainer extension for Visual Studio Code
 - Open the project in the devcontainer (F1 -Dev Containers: Open Folder in Container) (Might take a while the first time)
 - Run the "build and run" task (F1 -Tasks: Run Task -build and run)
+
+### Special notes for updating the README
+
+- The README can be converted to a pdf using the yzane.markdown-pdf extension for Visual Studio Code
 
 ## Project structure and how to add new content
 
