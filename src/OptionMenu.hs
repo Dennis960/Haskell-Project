@@ -41,6 +41,6 @@ selectOption message list = do
       case keyToDirection key of
         DirectionUp -> selectOption' (max 1 (selectedIndex - 1)) list
         DirectionDown -> selectOption' (min (length list) (selectedIndex + 1)) list
-        DirectionNone -> case key of
+        _ -> case key of
           "\n" -> return $ fst (list !! (selectedIndex - 1))
           _ -> selectOption' selectedIndex list
