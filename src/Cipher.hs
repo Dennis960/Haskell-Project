@@ -18,17 +18,24 @@ caeserCipher (x : xs) n = shiftChar x n : caeserCipher xs n
       | otherwise = c
 
 
-initAndExecuteVigenere:: String -> String -> String
-initAndExecuteVigenere [] _ = []
-initAndExecuteVigenere word key =  vigenereCipher (toLowerCase word) (toLowerCase key) 0
+
 
 toLowerCase:: String -> String
-toLowerCase word = map toLower word
+toLowerCase = map toLower
 
---when called int has to be 0 to act as pointer
-vigenereCipher:: String -> String -> Int -> String
-vigenereCipher [] _ _ = []
-vigenereCipher (x : xs) key pointer = shiftByKey x (key !! pointer) : vigenereCipher xs key ((pointer + 1) `mod` length key)
+removeWhiteSpaces:: String -> String
+removeWhiteSpaces [] = []
+removeWhiteSpaces (x : xs) = if isSpace x then removeWhiteSpaces xs else x : removeWhiteSpaces xs
+
+
+vigenereCipher:: String -> String -> String
+vigenereCipher [] _ = []
+vigenereCipher word key =  vigenereCipherLower (toLowerCase (removeWhiteSpaces word)) (toLowerCase (removeWhiteSpaces key)) 0
+
+--when called pointer has to be 0
+vigenereCipherLower:: String -> String -> Int -> String
+vigenereCipherLower [] _ _ = []
+vigenereCipherLower (x : xs) key pointer = shiftByKey x (key !! pointer) : vigenereCipherLower xs key ((pointer + 1) `mod` length key)
   where
     shiftByKey :: Char -> Char -> Char
     shiftByKey c key = chr $ ((ord c - ord 'a') + (ord key - ord 'a')) `mod` 26 + ord 'a'
