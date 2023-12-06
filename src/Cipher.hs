@@ -1,6 +1,6 @@
 module Cipher where
 
-import Data.Char (chr, isLower, isUpper, ord)
+import Data.Char (chr, isLower, isUpper, ord, toLower, isSpace)
 
 -- Caeser Cipher
 caeserCipher :: String -> Int -> String
@@ -18,20 +18,22 @@ caeserCipher (x : xs) n = shiftChar x n : caeserCipher xs n
       | otherwise = c
 
 
---TODO doesn't check all possible keys yet, no loop, no whitespace
-vigenereCipher :: String -> String -> String
-vigenereCipher [] _ = []
-vigenereCipher (x : xs) (k : restKey) = shiftChar x k : vigenereCipher xs restKey 
+initAndExecuteVigenere:: String -> String -> String
+initAndExecuteVigenere [] _ = []
+initAndExecuteVigenere word key =  vigenereCipher (toLowerCase word) (toLowerCase key) 0
+
+toLowerCase:: String -> String
+toLowerCase word = map toLower word
+
+--when called int has to be 0 to act as pointer
+vigenereCipher:: String -> String -> Int -> String
+vigenereCipher [] _ _ = []
+vigenereCipher (x : xs) key pointer = shiftByKey x (key !! pointer) : vigenereCipher xs key ((pointer + 1) `mod` length key)
   where
-    shiftLower :: Char -> Char -> Char
-    shiftLower c key = chr $ ((ord c - ord 'a') + (ord key - ord 'a')) `mod` 26 + ord 'a'
-    shiftUpper :: Char -> Char -> Char
-    shiftUpper c key = chr $ (ord c - ord 'A' + (ord key - ord 'A')) `mod` 26 + ord 'A'
-    shiftChar :: Char -> Char -> Char
-    shiftChar c key
-      | isLower c = shiftLower c key
-      | isUpper c = shiftUpper c key
-      | otherwise = c
+    shiftByKey :: Char -> Char -> Char
+    shiftByKey c key = chr $ ((ord c - ord 'a') + (ord key - ord 'a')) `mod` 26 + ord 'a'
+
+
 
 -- Reverse Text
 reverseText:: String -> String
