@@ -73,14 +73,13 @@ morseTable = [('a', ".-"), ('b', "-..."), ('c', "-.-."), ('d', "-.."),
               ('u', "..-"), ('v', "...-"), ('w', ".--"), ('x', "-..-"),
               ('y', "-.--"), ('z', "--..")]
 
---TODO maybe add exception handling
 morseCode:: String -> String
 morseCode [] = []
 morseCode (x : xs)
   | x `elem` (['a'..'z'] ++ ['A'..'Z']) = getMorseCode (toLower x) morseTable ++ " " ++ morseCode xs
-  -- word seperators are three spaces
+  -- word separators are three spaces
   | x == ' ' = "   " ++  morseCode xs
-  | otherwise = morseCode xs
+  | otherwise = x : morseCode xs
     where
       -- | gets the morse equivalent of letter
       getMorseCode:: Char -> [(Char, String)] -> String
