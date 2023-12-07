@@ -1,8 +1,15 @@
 module Cipher where
 
-import Data.Char (chr, isLower, isUpper, ord, toLower, isSpace)
+import Data.Char (chr, isLower, isUpper, ord, toLower, isLetter)
 
--- Caeser Cipher
+-- Reverse Text ---------
+reverseText:: String -> String
+reverseText [] = []
+reverseText [x] = [x]
+reverseText (x:xs) = reverseText xs ++ [x]
+
+
+-- Caeser Cipher -------
 caeserCipher :: String -> Int -> String
 caeserCipher [] _ = []
 caeserCipher (x : xs) n = shiftChar x n : caeserCipher xs n
@@ -18,37 +25,45 @@ caeserCipher (x : xs) n = shiftChar x n : caeserCipher xs n
       | otherwise = c
 
 
-
-
-toLowerCase:: String -> String
-toLowerCase = map toLower
-
-removeWhiteSpaces:: String -> String
-removeWhiteSpaces [] = []
-removeWhiteSpaces (x : xs) = if isSpace x then removeWhiteSpaces xs else x : removeWhiteSpaces xs
-
-
+-- Vigenere Cipher ---------
 vigenereCipher:: String -> String -> String
 vigenereCipher [] _ = []
-vigenereCipher word key =  vigenereCipherLower (toLowerCase (removeWhiteSpaces word)) (toLowerCase (removeWhiteSpaces key)) 0
+vigenereCipher word key =  cipherVigenere word (prepForCipher key) 0
+-- | when called Int has to be 0 to function correctly as the index of the key
+  where 
+  cipherVigenere:: String -> String -> Int -> String
+  cipherVigenere [] _ _ = []
+  cipherVigenere (x : xs) key keyIndex = shiftByKey x (key !! keyIndex) : cipherVigenere xs key ((keyIndex + 1) `mod` length key)
+    where
+      shiftLower :: Char -> Char -> Char
+      shiftLower c key = chr $ ((ord c - ord 'a') + (ord key - ord 'a')) `mod` 26 + ord 'a'
+      shiftUpper :: Char -> Char -> Char
+      shiftUpper c key = chr $ ((ord c - ord 'A') + (ord key - ord 'a')) `mod` 26 + ord 'A'
+      shiftByKey :: Char -> Char -> Char
+      shiftByKey c key 
+       | isLower x = shiftLower x key
+       | isUpper x = shiftUpper x key
+       | otherwise = x
+    
 
---when called pointer has to be 0
-vigenereCipherLower:: String -> String -> Int -> String
-vigenereCipherLower [] _ _ = []
-vigenereCipherLower (x : xs) key pointer = shiftByKey x (key !! pointer) : vigenereCipherLower xs key ((pointer + 1) `mod` length key)
+-- | removes non-alphabetical symbols (and whitespaces) and makes everything lowercase
+prepForCipher :: String -> String
+prepForCipher [] = []
+prepForCipher word = toLowerCase (removeNonAlphabetical word) 
   where
-    shiftByKey :: Char -> Char -> Char
-    shiftByKey c key = chr $ ((ord c - ord 'a') + (ord key - ord 'a')) `mod` 26 + ord 'a'
+
+    toLowerCase:: String -> String
+    toLowerCase = map toLower
+
+    removeNonAlphabetical :: String -> String 
+    removeNonAlphabetical [] = []
+    removeNonAlphabetical (x : xs)
+      | isLetter x = x : removeNonAlphabetical xs
+      | otherwise = removeNonAlphabetical xs
 
 
 
--- Reverse Text
-reverseText:: String -> String
-reverseText [] = []
-reverseText [x] = [x]
-reverseText (x:xs) = reverseText xs ++ [x]
 
--- Vigenère Cipher
 -- Morse Code
 -- Substitution Cipher
 -- Atbash Cipher
@@ -57,7 +72,6 @@ reverseText (x:xs) = reverseText xs ++ [x]
 -- Base64 Encoding
 -- Pig Latin
 -- Playfair Cipher
--- Scytale Cipher
 -- Transposition Cipher
 -- Binary Coded Decimal (BCD)
 -- Semaphore Encoding
