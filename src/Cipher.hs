@@ -30,7 +30,7 @@ vigenereCipher:: String -> String -> String
 vigenereCipher [] _ = []
 vigenereCipher word key =  cipherVigenere word (prepForCipher key) 0
 -- | when called Int has to be 0 to function correctly as the index of the key
-  where 
+  where
   cipherVigenere:: String -> String -> Int -> String
   cipherVigenere [] _ _ = []
   cipherVigenere (x : xs) key keyIndex = shiftByKey x (key !! keyIndex) : cipherVigenere xs key ((keyIndex + 1) `mod` length key)
@@ -40,26 +40,53 @@ vigenereCipher word key =  cipherVigenere word (prepForCipher key) 0
       shiftUpper :: Char -> Char -> Char
       shiftUpper c key = chr $ ((ord c - ord 'A') + (ord key - ord 'a')) `mod` 26 + ord 'A'
       shiftByKey :: Char -> Char -> Char
-      shiftByKey c key 
+      shiftByKey c key
        | isLower x = shiftLower x key
        | isUpper x = shiftUpper x key
        | otherwise = x
-    
+
 
 -- | removes non-alphabetical symbols (and whitespaces) and makes everything lowercase
 prepForCipher :: String -> String
 prepForCipher [] = []
-prepForCipher word = toLowerCase (removeNonAlphabetical word) 
+prepForCipher word = toLowerCase (removeNonAlphabetical word)
   where
 
     toLowerCase:: String -> String
     toLowerCase = map toLower
 
-    removeNonAlphabetical :: String -> String 
+    removeNonAlphabetical :: String -> String
     removeNonAlphabetical [] = []
     removeNonAlphabetical (x : xs)
       | isLetter x = x : removeNonAlphabetical xs
       | otherwise = removeNonAlphabetical xs
+
+--Morse Code ------
+
+-- | never to be touched D:<
+morseTable :: [(Char, String)]
+morseTable = [('a', ".-"), ('b', "-..."), ('c', "-.-."), ('d', "-.."),
+              ('e', "."), ('f', "..-."), ('g', "--."), ('h', "...."),
+              ('i', ".."), ('j', ".---"), ('k', "-.-"), ('l', ".-.."),
+              ('m', "--"), ('n', "-."), ('o', "---"), ('p', ".--."),
+              ('q', "--.-"), ('r', ".-."), ('s', "..."), ('t', "-"),
+              ('u', "..-"), ('v', "...-"), ('w', ".--"), ('x', "-..-"),
+              ('y', "-.--"), ('z', "--..")]
+
+--TODO maybe add exception handling
+morseCode:: String -> String
+morseCode [] = []
+morseCode (x : xs)
+  | x `elem` (['a'..'z'] ++ ['A'..'Z']) = getMorseCode (toLower x) morseTable ++ " " ++ morseCode xs
+  -- word seperators are three spaces
+  | x == ' ' = "   " ++  morseCode xs
+  | otherwise = morseCode xs
+    where
+      -- | gets the morse equivalent of letter
+      getMorseCode:: Char -> [(Char, String)] -> String
+      getMorseCode _ [] = []
+      getMorseCode c ((letter, morse) : xs) = if letter == c then morse else getMorseCode c xs
+
 
 
 
