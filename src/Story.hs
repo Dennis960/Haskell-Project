@@ -5,7 +5,7 @@ module Story
   )
 where
 
-import Cipher (caeserCipher)
+import Cipher (caeserCipher, reverseText)
 import GameLoopElement
   ( GameLoopElement (..),
     RoomElement (..),
@@ -49,7 +49,7 @@ gameLoopElements =
               "Daneben ist ein Terminal, in welches du einen Text eingeben kannst."
             ],
           storySecret = "Willkommen im Spiel",
-          storyCypherFunction = (`caeserCipher` 3)
+          storyCypherFunction = reverseText
         },
     StoryTextItem
       StoryText
