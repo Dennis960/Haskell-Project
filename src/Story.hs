@@ -30,7 +30,7 @@ gameLoopElements =
               "Nun stehe ich vor einer verschlossenen Tür.",
               "Es scheint ein uralter Mechanismus zu sein. Leuchtende Schrift ist in den Griff eingraviert.",
               "Ich weiß, was sie bedeutet. Der große Meister hatte schon immer eine Vorliebe für Verschlüsselungen.",
-              "Ich muss nur jeden Buchstaben des Schlüssels um drei Stellen im Alphabet verschieben, dann öffnet sich die Tür.»",
+              "Ich muss nur den Satz von hinten nach vorne lesen»",
               "",
               "Du legst das Tagebuch beiseite und gehst zur Tür."
             ]
@@ -44,8 +44,10 @@ gameLoopElements =
       StorySecret
         { storySecretText =
             [ "Am Türgriff liest du folgenden Text:",
+              "----------",
               "$SECRET",
               "Reverse Text",
+              "----------",
               "Daneben ist ein Terminal, in welches du einen Text eingeben kannst."
             ],
           storySecret = "Willkommen im Spiel",
@@ -96,8 +98,40 @@ gameLoopElements =
               "Wie konnte ich nur so dumm sein?",
               "Ich hätte den Raum auf Falltüren untersuchen sollen.»",
               "",
-              "Du ärgerst dich, dass du dich an diese Stelle nicht erinnert hast."
+              "Du ärgerst dich, dass du dich an diese Stelle nicht erinnert hast.",
+              "Jetzt aufgeben ist jedoch keine Option.",
+              "«Vielleicht gibt es ja wieder einen Weg zurück nach oben",
+              "Du blickst auf und betrachtest die Tür vor dir.", 
+              "Die zuvor unbekannte Lichtquelle lässt sich als eine weitere leuchtende Gravierung identifizieren"
             ]
+        },
+    StorySecretItem
+      StorySecret
+        { storySecretText =
+            [ "----------",
+              "$SECRET",
+              "Caeser Chiffre, 3",
+              "----------",
+              "Hektisch blätterst du im Tagebuch herum bis du die Seite findest:",
+              "«Natürlich! Ich muss nur jeden Buchstaben um 3 Stellen zurück verschieben, dann ist das Rätsel gelöst.»",
+              "Daneben ist ein Terminal, in welches du einen Text eingeben kannst."
+            ],
+          storySecret = "Verliere nicht den Mut",
+          storyCypherFunction = (`caeserCipher` 3)
+        },
+    StoryTextItem
+      StoryText
+        { storyTextText =
+            [ "Die Tür schwingt ächzend auf. Du kannst in der Dunkelheit einen weiteren, verwinkelten Flur ausmachen.",
+              "«Ich weiß wirklich nicht ob ich den großen Meister bewundern oder hassen soll.",
+              "Doch scheinbar ist das der einzige Weg um voranzukommen..»",
+              "Die Tür fällt hinter dir zu, nachdem du den neuen Gang betrittst."
+            ]
+        },
+    WaitForEnterKeyItem,
+    RoomItem
+      RoomElement
+        { roomName = "room_cave1"
         }
   ]
 
