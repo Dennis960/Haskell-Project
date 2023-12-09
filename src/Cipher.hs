@@ -81,6 +81,11 @@ morseCode (x : xs)
   | x == ' ' = "   " ++  morseCode xs
   | otherwise = x : morseCode xs
 
+
+-- | get ciphered symbol with corresponding letter
+getFromTable:: Eq a => a -> [(a,b)] -> b
+getFromTable c ((letter, wanted) : xs) = if letter == c then wanted else getFromTable c xs
+
 --Tap Code -------
 -- table that assigns a letter to tap pattern; table-entry-pattern: (letter, (x-Coord, y-Coord))
 -- 'c' and 'k' are the same, so 'k' is skipped in the table
@@ -91,22 +96,23 @@ tapTable = zip ['a'..'j'] [(x, y) | x <- [1..2], y <- [1..5]]
 
 tapCode:: String -> String
 tapCode [] = []
---tapCode [x] = "hi" --TODO do the same as below just no space at the end
+tapCode [x] = determineTapAmount x
 tapCode (x : xs)
-  | lower == 'k' = tapCode ('c' : xs)
-  | lower `elem` ['a'..'z'] = let coords = getFromTable lower tapTable in
-    printTaps (fst coords) ++ " " ++ printTaps (snd coords) ++ (if null xs then "" else " ") ++ tapCode xs
+  | toLower x `elem` ['a'..'z'] = determineTapAmount x ++ tapCode xs
   | otherwise = x : tapCode xs
-    where
-      lower = toLower x
 
-      printTaps :: Integer -> String
-      printTaps 0 = []
-      printTaps x = "tap"++ printTaps (x - 1)
+determineTapAmount :: Char -> String
+determineTapAmount c
+  | lower == 'k' =  determineTapAmount 'c'
+  | lower `elem` ['a'..'z'] = let coords = getFromTable lower tapTable in
+    printTaps (fst coords) ++ " " ++ printTaps (snd coords)
+  | otherwise = [c]
+  where 
+    lower = toLower c
 
--- | get ciphered symbol with corresponding letter
-getFromTable:: Eq a => a -> [(a,b)] -> b
-getFromTable c ((letter, wanted) : xs) = if letter == c then wanted else getFromTable c xs
+printTaps :: Integer -> String
+printTaps 0 = []
+printTaps x = "tap"++ printTaps (x - 1)
 
 
 -- Substitution Cipher
