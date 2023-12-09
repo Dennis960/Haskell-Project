@@ -5,7 +5,7 @@ module Story
   )
 where
 
-import Cipher (caeserCipher, reverseText)
+import Cipher (caeserCipher, reverseText, morseCode)
 import GameLoopElement
   ( GameLoopElement (..),
     RoomElement (..),
@@ -44,10 +44,10 @@ gameLoopElements =
       StorySecret
         { storySecretText =
             [ "Am Türgriff liest du folgenden Text:",
-              "----------",
+              "______________",
               "$SECRET",
               "Reverse Text",
-              "----------",
+              "______________",
               "Daneben ist ein Terminal, in welches du einen Text eingeben kannst."
             ],
           storySecret = "Willkommen im Spiel",
@@ -108,11 +108,11 @@ gameLoopElements =
     StorySecretItem
       StorySecret
         { storySecretText =
-            [ "----------",
+            [ "______________",
               "$SECRET",
               "Caeser Chiffre, 3",
-              "----------",
-              "Hektisch blätterst du im Tagebuch herum bis du die Seite findest:",
+              "______________",
+              "Hektisch blätterst du im Tagebuch weiter bis du die Seite findest:",
               "«Natürlich! Ich muss nur jeden Buchstaben um 3 Stellen zurück verschieben, dann ist das Rätsel gelöst.»",
               "Daneben ist ein Terminal, in welches du einen Text eingeben kannst."
             ],
@@ -132,7 +132,50 @@ gameLoopElements =
     RoomItem
       RoomElement
         { roomName = "room_cave1"
+        },
+    StoryTextItem
+      StoryText
+        { storyTextText =
+            [ "«Endlich, eine Tür! Doch was ist das? Anstatt Buchstaben sind Symbole in die Tür eingeritzt.»",
+              "Du läufst mit einem Finger behutsam entlang der Einritzungen.",
+              "«Hmm, anscheinend hat dieses Rätsel etwas mit Punkten und Strichen zu tuen.",
+              "Vielleicht kann mir das Tagebuch wieder helfen.»",
+              "Nach etwas Herumblättern im Buch findest du auf einer Seite eine kleine Tabelle.",
+              "In einer Spalte steht jeweils immer ein Buchstabe, in der anderen Spalte ein Muster aus Punkten und Strichen.",
+              "Mit Buch in Hand blickst du erneut auf die Einritzungen in der Tür."
+            ]
+        },
+    StorySecretItem
+      StorySecret
+        { storySecretText =
+            [ "______________",
+              "$SECRET",
+              "Morsecode",
+              "______________",
+              "[ a:  .-  ] | [ b: -... ] | [ c: -.-. ] | [ d:  -.. ]",
+              "[ e:   .  ] | [ f: ..-. ] | [ g:  --. ] | [ h: .... ]",
+              "[ i:  ..  ] | [ j: .--- ] | [ k:  -.- ] | [ l: .-.. ]",
+              "[ m:  --  ] | [ n:  -.  ] | [ o:  --- ] | [ p: .--. ]",
+              "[ q: --.- ] | [ r:  .-. ] | [ s:  ... ] | [ t:   -  ]",
+              "[ u:  ..- ] | [ v: ...- ] | [ w:  .-- ] | [ x: -..- ]",
+              "            | [ y: -.-- ] | [ z: --.. ] |"
+            ],
+            --TODO--------------------------------------------------------------------------------------
+          storySecret = "SOS",
+          storyCypherFunction = morseCode
+        },
+    StoryTextItem
+      StoryText
+        { storyTextText =
+            [ "Wendeltreppe :D"
+            ]
+        },
+    WaitForEnterKeyItem,
+    RoomItem
+      RoomElement
+        { roomName = "room_stairs"
         }
+    
   ]
 
 -- | Returns the gameLoopElement with the given number from the gameLoopElements list, if it exists
