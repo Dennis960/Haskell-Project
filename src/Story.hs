@@ -123,7 +123,7 @@ gameLoopElements =
       StoryText
         { storyTextText =
             [ "Die Tür schwingt ächzend auf. Du kannst in der Dunkelheit einen weiteren, verwinkelten Flur ausmachen.",
-              "«Ich weiß wirklich nicht ob ich den großen Meister bewundern oder hassen soll.",
+              "«Ich weiß wirklich nicht ob ich den großen Meister bewundern oder verachten soll.",
               "Doch scheinbar ist das der einzige Weg um voranzukommen..»",
               "Die Tür fällt hinter dir zu, nachdem du den neuen Gang betrittst."
             ]
