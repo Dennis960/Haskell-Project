@@ -76,21 +76,39 @@ morseTable = [('a', ".-"), ('b', "-..."), ('c', "-.-."), ('d', "-.."),
 morseCode:: String -> String
 morseCode [] = []
 morseCode (x : xs)
-  | x `elem` (['a'..'z'] ++ ['A'..'Z']) = getMorseCode (toLower x) morseTable ++ " " ++ morseCode xs
+  | toLower x `elem` ['a'..'z'] = getFromTable (toLower x) morseTable ++ " " ++ morseCode xs
   -- word separators are three spaces
   | x == ' ' = "   " ++  morseCode xs
   | otherwise = x : morseCode xs
+
+--Tap Code -------
+-- table that assigns a letter to tap pattern; table-entry-pattern: (letter, (x-Coord, y-Coord))
+-- 'c' and 'k' are the same, so 'k' is skipped in the table
+tapTable :: [(Char, (Integer, Integer))]
+tapTable = zip ['a'..'j'] [(x, y) | x <- [1..2], y <- [1..5]]
+           ++ zip ['l'..'z'] [(x, y) | x <- [3..5], y <- [1..5]]
+
+
+tapCode:: String -> String
+tapCode [] = []
+--tapCode [x] = "hi" --TODO do the same as below just no space at the end
+tapCode (x : xs)
+  | lower == 'k' = tapCode ('c' : xs)
+  | lower `elem` ['a'..'z'] = let coords = getFromTable lower tapTable in
+    printTaps (fst coords) ++ " " ++ printTaps (snd coords) ++ (if null xs then "" else " ") ++ tapCode xs
+  | otherwise = x : tapCode xs
     where
-      -- | gets the morse equivalent of letter
-      getMorseCode:: Char -> [(Char, String)] -> String
-      getMorseCode _ [] = []
-      getMorseCode c ((letter, morse) : xs) = if letter == c then morse else getMorseCode c xs
+      lower = toLower x
+
+      printTaps :: Integer -> String
+      printTaps 0 = []
+      printTaps x = "tap"++ printTaps (x - 1)
+
+-- | get ciphered symbol with corresponding letter
+getFromTable:: Eq a => a -> [(a,b)] -> b
+getFromTable c ((letter, wanted) : xs) = if letter == c then wanted else getFromTable c xs
 
 
-
-
-
--- Morse Code
 -- Substitution Cipher
 -- Atbash Cipher
 -- Rail Fence Cipher

@@ -45,7 +45,7 @@ gameLoopElements =
         { storySecretText =
             [ "Am Türgriff liest du folgenden Text:",
               "$SECRET",
-              "Caesar Shift 3",
+              "Reverse Text",
               "Daneben ist ein Terminal, in welches du einen Text eingeben kannst."
             ],
           storySecret = "Willkommen im Spiel",
