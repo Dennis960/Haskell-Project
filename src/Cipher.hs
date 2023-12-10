@@ -98,7 +98,7 @@ tapCode:: String -> String
 tapCode [] = []
 tapCode [x] = determineTapAmount x
 tapCode (x : xs)
-  | toLower x `elem` ['a'..'z'] = determineTapAmount x ++ tapCode xs
+  | toLower x `elem` ['a'..'z'] = determineTapAmount x ++ " " ++ tapCode xs 
   | otherwise = x : tapCode xs
 
 determineTapAmount :: Char -> String
@@ -115,7 +115,7 @@ printTaps 0 = []
 printTaps x = "tap"++ printTaps (x - 1)
 
 
--- Substitution Cipher
+--Substitution Cipher -------------
 -- Atbash Cipher
 -- Rail Fence Cipher
 -- Binary Encoding
