@@ -138,7 +138,7 @@ gameLoopElements =
       StoryText
         { storyTextText =
             [ "«Endlich, eine Tür! Doch was ist das? Anstatt Buchstaben sind Symbole in die Tür eingeritzt.»",
-              "Du fährst mit einem Finger behutsam entlang der Einritzungen an der Tür entlang.",
+              "Du fährst mit einem Finger behutsam entlang der Einritzungen in der Tür.",
               "«Hmm, anscheinend hat dieses Rätsel etwas mit Punkten und Strichen zu tun.",
               "Vielleicht kann mir das Tagebuch wieder helfen.»",
               "Nach etwas Herumblättern im Buch findest du auf einer Seite eine kleine Tabelle.",

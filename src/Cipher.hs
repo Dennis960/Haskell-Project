@@ -86,7 +86,8 @@ morseCode (x : xs)
 getFromTable:: Eq a => a -> [(a,b)] -> b
 getFromTable c ((letter, wanted) : xs) = if letter == c then wanted else getFromTable c xs
 
---Tap Code -------
+
+--Tap Code -----------
 -- table that assigns a letter to tap pattern; table-entry-pattern: (letter, (x-Coord, y-Coord))
 -- 'c' and 'k' are the same, so 'k' is skipped in the table
 tapTable :: [(Char, (Integer, Integer))]
@@ -98,7 +99,7 @@ tapCode:: String -> String
 tapCode [] = []
 tapCode [x] = determineTapAmount x
 tapCode (x : xs)
-  | toLower x `elem` ['a'..'z'] = determineTapAmount x ++ " " ++ tapCode xs 
+  | toLower x `elem` ['a'..'z'] = determineTapAmount x ++ " " ++ tapCode xs
   | otherwise = x : tapCode xs
 
 determineTapAmount :: Char -> String
@@ -107,7 +108,7 @@ determineTapAmount c
   | lower `elem` ['a'..'z'] = let coords = getFromTable lower tapTable in
     printTaps (fst coords) ++ " " ++ printTaps (snd coords)
   | otherwise = [c]
-  where 
+  where
     lower = toLower c
 
 printTaps :: Integer -> String
@@ -115,18 +116,30 @@ printTaps 0 = []
 printTaps x = "tap"++ printTaps (x - 1)
 
 
---Substitution Cipher -------------
--- Atbash Cipher
--- Rail Fence Cipher
--- Binary Encoding
--- Base64 Encoding
--- Pig Latin
--- Playfair Cipher
--- Transposition Cipher
--- Binary Coded Decimal (BCD)
--- Semaphore Encoding
--- Tap Code
--- Semaphore Flag Code
--- Trifid Cipher
--- Caesar Box Cipher
--- Tap Code (Modified)
+--columnar transposition cipher -------
+--TODO fill with spaces if not enough letters
+columnarTranspositionCipher :: String -> String -> String
+columnarTranspositionCipher [] _ = []
+columnarTranspositionCipher word key = let sortedCol = sortColsByAlphabet (generateColumns word key) in
+   concat [snd col | col <- sortedCol]
+
+-- | generates columns from word with key
+-- | [(columnname, column), ...]
+-- | columnname is the n-th letter from key assigned to the column
+-- | column holds every n-th letter from word; n is the position of the column in the key
+generateColumns :: String -> String -> [(Char, String)]
+generateColumns [] _ = []
+generateColumns word [] = []
+generateColumns word key= [(key !! col, generateColumn word (length key) col) | col  <- [0..length key - 1] ]
+
+-- | gets every n-th letter from word
+generateColumn :: String -> Int -> Int -> String 
+generateColumn word keylength columnnum= [word !! pos | pos <- [0..length word-1], pos `mod` keylength == columnnum]
+
+-- | sorts columns by the letter assigned to them
+sortColsByAlphabet :: [(Char, String)] -> [(Char, String)]
+sortColsByAlphabet [] = []
+sortColsByAlphabet ((col, letters):xs) = sortColsByAlphabet ys ++ [(col, letters)] ++ sortColsByAlphabet zs
+    where
+        ys = [a | a <- xs, fst a <= col]
+        zs = [b | b <- xs, fst b > col]
