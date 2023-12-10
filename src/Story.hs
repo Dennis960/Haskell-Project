@@ -2,6 +2,7 @@ module Story
   ( getGameLoopElement,
     gameLoopElementsWithType,
     gameLoopElementsWithSolution,
+    lengthOfGameLoopElements,
   )
 where
 
@@ -202,3 +203,6 @@ gameLoopElementsWithSolution = filter (\(_, solution) -> solution /= "") (zip (m
     getGameLoopElementSecret :: GameLoopElement -> String
     getGameLoopElementSecret (StorySecretItem StorySecret {storySecret, storyCypherFunction}) = storyCypherFunction storySecret
     getGameLoopElementSecret _ = ""
+
+lengthOfGameLoopElements :: Int
+lengthOfGameLoopElements = length gameLoopElements

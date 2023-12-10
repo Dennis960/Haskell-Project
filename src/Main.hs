@@ -7,7 +7,7 @@ import GameLoopElement
 import KeyEvents (waitForEnterKey)
 import OptionMenu (selectOption)
 import Room (loadRoom, loopPlayerInsideRoom, printRoom)
-import Story (gameLoopElementsWithType, gameLoopElementsWithSolution, getGameLoopElement)
+import Story (gameLoopElementsWithType, gameLoopElementsWithSolution, getGameLoopElement, lengthOfGameLoopElements)
 
 newtype GameState = GameState
   { gameElementNumber :: Int
@@ -31,7 +31,11 @@ run gameState@(GameState gameElementNumber) = do
       putStrLn "(Enter drücken zum Fortfahren)"
       waitForEnterKey
 
-  run (GameState {gameElementNumber = gameElementNumber + 1})
+  if gameElementNumber == lengthOfGameLoopElements
+    then do
+      putStrLn "Du hast das Spiel erfolgreich beendet!"
+    else do
+      run (GameState {gameElementNumber = gameElementNumber + 1})
 
 data PlayMode = PlayMode | CheatMode deriving (Show, Eq)
 
