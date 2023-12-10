@@ -26,7 +26,7 @@ Das Projekt beinhaltet Verschlüsselungsalgorithmen, Optionsmenus, die Möglichk
 - ✅ Listen (z.B. in gameLoopElements in Story.hs)
 - ✅ list comprehension (z.B. in randomScreen in ConsoleFX.hs)
 - ✅ Funktionen mit pattern matching (z.B. in printStory in GameLoopElement.hs)
-- ✅ Funktionen mit guards (z.B. in caeserCipher in Cipher.hs)
+- ✅ Funktionen mit guards (z.B. in caesarCipher in Cipher.hs)
 - ✅ Rekursive Funktionen (z.B. run in Main.hs)
 - ✅ Funktionen höherer Ordnung wie map, filter, fold (z.B. in printRoom in Room.hs)
 - 🟨 Fehlerbehandlung ggf. mit Either oder Maybe (z.B. in loadRoom - findPlayerPosition in Room.hs, allerdings ohne Either oder Maybe)

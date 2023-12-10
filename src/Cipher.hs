@@ -9,10 +9,10 @@ reverseText [x] = [x]
 reverseText (x:xs) = reverseText xs ++ [x]
 
 
--- Caeser Cipher -------
-caeserCipher :: String -> Int -> String
-caeserCipher [] _ = []
-caeserCipher (x : xs) n = shiftChar x n : caeserCipher xs n
+-- Caesar Cipher -------
+caesarCipher :: String -> Int -> String
+caesarCipher [] _ = []
+caesarCipher (x : xs) n = shiftChar x n : caesarCipher xs n
   where
     shiftLower :: Char -> Int -> Char
     shiftLower c n = chr $ (ord c - ord 'a' + n) `mod` 26 + ord 'a'

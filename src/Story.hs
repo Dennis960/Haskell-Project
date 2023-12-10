@@ -5,7 +5,7 @@ module Story
   )
 where
 
-import Cipher (caeserCipher, reverseText, morseCode)
+import Cipher (caesarCipher, reverseText, morseCode)
 import GameLoopElement
   ( GameLoopElement (..),
     RoomElement (..),
@@ -60,7 +60,7 @@ gameLoopElements =
               "Zum Glück hast du das Tagebuch nicht liegen gelassen.",
               "",
               "«Es ist erstaunlich, welch riesige Mechanismen der große Meister erschaffen hat, um seine wichtigsten Schätze zu schützen.",
-              "Ich habe nur Gerüchte gehört, aber es heißt, dass das gesamte Gebäude sofort einstürtzen würde, wenn man einen Raum betritt, ohne das vorherige Rätsel gelöst zu haben.",
+              "Ich habe nur Gerüchte gehört, aber es heißt, dass das gesamte Gebäude sofort einstürzen würde, wenn man einen Raum betritt, ohne das vorherige Rätsel gelöst zu haben.",
               "Damit wäre die Weltformel für immer verloren.»"
             ]
         },
@@ -102,7 +102,7 @@ gameLoopElements =
               "Jetzt aufgeben ist jedoch keine Option.",
               "«Vielleicht gibt es ja wieder einen Weg zurück nach oben",
               "Du blickst auf und betrachtest die Tür vor dir.", 
-              "Die zuvor unbekannte Lichtquelle lässt sich als eine weitere leuchtende Gravierung identifizieren"
+              "Die zuvor unbekannte Lichtquelle lässt sich als eine weitere leuchtende Gravierung identifizieren."
             ]
         },
     StorySecretItem
@@ -110,14 +110,14 @@ gameLoopElements =
         { storySecretText =
             [ "______________",
               "$SECRET",
-              "Caeser Chiffre, 3",
+              "Caesar Chiffre, 3",
               "______________",
               "Hektisch blätterst du im Tagebuch weiter bis du die Seite findest:",
               "«Natürlich! Ich muss nur jeden Buchstaben um 3 Stellen zurück verschieben, dann ist das Rätsel gelöst.»",
               "Daneben ist ein Terminal, in welches du einen Text eingeben kannst."
             ],
           storySecret = "Verliere nicht den Mut",
-          storyCypherFunction = (`caeserCipher` 3)
+          storyCypherFunction = (`caesarCipher` 3)
         },
     StoryTextItem
       StoryText
@@ -137,12 +137,21 @@ gameLoopElements =
       StoryText
         { storyTextText =
             [ "«Endlich, eine Tür! Doch was ist das? Anstatt Buchstaben sind Symbole in die Tür eingeritzt.»",
-              "Du läufst mit einem Finger behutsam entlang der Einritzungen.",
-              "«Hmm, anscheinend hat dieses Rätsel etwas mit Punkten und Strichen zu tuen.",
+              "Du fährst mit einem Finger behutsam entlang der Einritzungen an der Tür entlang.",
+              "«Hmm, anscheinend hat dieses Rätsel etwas mit Punkten und Strichen zu tun.",
               "Vielleicht kann mir das Tagebuch wieder helfen.»",
               "Nach etwas Herumblättern im Buch findest du auf einer Seite eine kleine Tabelle.",
               "In einer Spalte steht jeweils immer ein Buchstabe, in der anderen Spalte ein Muster aus Punkten und Strichen.",
-              "Mit Buch in Hand blickst du erneut auf die Einritzungen in der Tür."
+              "",
+              "[ a:  .-  ] | [ b: -... ] | [ c: -.-. ] | [ d:  -.. ]",
+              "[ e:   .  ] | [ f: ..-. ] | [ g:  --. ] | [ h: .... ]",
+              "[ i:  ..  ] | [ j: .--- ] | [ k:  -.- ] | [ l: .-.. ]",
+              "[ m:  --  ] | [ n:  -.  ] | [ o:  --- ] | [ p: .--. ]",
+              "[ q: --.- ] | [ r:  .-. ] | [ s:  ... ] | [ t:   -  ]",
+              "[ u:  ..- ] | [ v: ...- ] | [ w:  .-- ] | [ x: -..- ]",
+              "            | [ y: -.-- ] | [ z: --.. ] |",
+              "",
+              "Mit dem Tagebuch in der Hand blickst du erneut auf die Einritzungen in der Tür."
             ]
         },
     StorySecretItem
@@ -151,14 +160,7 @@ gameLoopElements =
             [ "______________",
               "$SECRET",
               "Morsecode",
-              "______________",
-              "[ a:  .-  ] | [ b: -... ] | [ c: -.-. ] | [ d:  -.. ]",
-              "[ e:   .  ] | [ f: ..-. ] | [ g:  --. ] | [ h: .... ]",
-              "[ i:  ..  ] | [ j: .--- ] | [ k:  -.- ] | [ l: .-.. ]",
-              "[ m:  --  ] | [ n:  -.  ] | [ o:  --- ] | [ p: .--. ]",
-              "[ q: --.- ] | [ r:  .-. ] | [ s:  ... ] | [ t:   -  ]",
-              "[ u:  ..- ] | [ v: ...- ] | [ w:  .-- ] | [ x: -..- ]",
-              "            | [ y: -.-- ] | [ z: --.. ] |"
+              "______________"
             ],
             --TODO--------------------------------------------------------------------------------------
           storySecret = "SOS",
