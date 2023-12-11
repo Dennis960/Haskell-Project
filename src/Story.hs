@@ -6,7 +6,8 @@ module Story
   )
 where
 
-import Cipher (caesarCipher, reverseText, morseCode)
+import Cipher (caesarCipher, morseCode, reverseText)
+import Distribution.Compat.CharParsing (CharParsing (text))
 import GameLoopElement
   ( GameLoopElement (..),
     RoomElement (..),
@@ -102,7 +103,7 @@ gameLoopElements =
               "Du ärgerst dich, dass du dich an diese Stelle nicht erinnert hast.",
               "Jetzt aufgeben ist jedoch keine Option.",
               "«Vielleicht gibt es ja wieder einen Weg zurück nach oben",
-              "Du blickst auf und betrachtest die Tür vor dir.", 
+              "Du blickst auf und betrachtest die Tür vor dir.",
               "Die zuvor unbekannte Lichtquelle lässt sich als eine weitere leuchtende Gravierung identifizieren."
             ]
         },
@@ -163,7 +164,7 @@ gameLoopElements =
               "Morsecode",
               "______________"
             ],
-            --TODO--------------------------------------------------------------------------------------
+          -- TODO--------------------------------------------------------------------------------------
           storySecret = "SOS",
           storyCypherFunction = morseCode
         },
@@ -177,8 +178,77 @@ gameLoopElements =
     RoomItem
       RoomElement
         { roomName = "room_stairs"
+        },
+    StoryTextItem
+      StoryText
+        { storyTextText =
+            [ "Endlich, dort auf dem Podest ist die Weltformel.",
+              "Du kannst es kaum glauben, aber die Geschichte des großen Meisters stimmt wirklich.",
+              "Langsam bewegst du dich auf das Podest zu."
+            ]
+        },
+    RoomItem
+      RoomElement
+        { roomName = "room_weltformel"
+        },
+    StoryTextItem
+      StoryText
+        { storyTextText =
+            [ "Nur noch ein Schritt entfernt. Da liegt sie.",
+              "Doch was ist das?",
+              "",
+              "«Das ist das geheime Rezept meiner Omi. Ich liebe meine Omi über alles ♥",
+              "Omis Geheimer Milchkuchen",
+              "",
+              "🥛🥛🥛",
+              "🍚🥚🍚  =  🎂",
+              "🌾🌾🌾",
+              "",
+              "Zutaten:",
+              "- 3 Eimer Milch",
+              "- 2 mal Zucker",
+              "- 1 Ei",
+              "- 3 mal Weizen",
+              "",
+              "Dauer: 1 Stunde",
+              "",
+              "Anleitung:",
+              "1. Die 3 Eimer Milch in einen großen Topf gießen und langsam erhitzen, bis sie warm, aber nicht kochend sind.",
+              "2. In einer Schüssel den Weizen sieben und beiseite stellen.",
+              "3. Das Ei in einer separaten Schüssel leicht verquirlen.",
+              "4. Nach und nach den Zucker zur warmen Milch geben und gut umrühren, bis der Zucker vollständig aufgelöst ist.",
+              "5. Das verquirlte Ei in die Milch-Zucker-Mischung einrühren. Ständig rühren, um sicherzustellen, dass das Ei gleichmäßig verteilt wird.",
+              "6. Den gesiebten Weizen nach und nach zur Mischung hinzufügen, dabei kontinuierlich rühren, um Klumpen zu vermeiden. Rühren, bis ein glatter Teig entsteht.",
+              "7. Den Backofen auf 180 Grad Celsius vorheizen.",
+              "8. Eine Backform einfetten und den Teig gleichmäßig darin verteilen.",
+              "9. Den Kuchen im vorgeheizten Ofen etwa 30-40 Minuten backen oder bis er goldbraun und durchgebacken ist.",
+              "10. Nach dem Backen den Kuchen abkühlen lassen und nach Belieben mit Puderzucker bestreuen.",
+              "Genieße Omis Geheimen Milchkuchen mit einer Tasse Tee oder Kaffee und erinnere dich an die liebevolle Tradition deiner Omi!"
+            ]
+        },
+    WaitForEnterKeyItem,
+    StoryTextItem
+      StoryText
+        { storyTextText =
+            [ "",
+              "Das kann nicht wahr sein. Ein Kuchenrezept?",
+              "Du fällst auf die Knie und fängst an zu weinen.",
+              "Doch immerhin kennst du jetzt Omis Geheimen Milchkuchen."
+            ]
+        },
+    StoryTextItem
+      StoryText
+        { storyTextText =
+            [ "  _____              _           __ _   _      _        _____       _      _            \n\
+              \ |  __ \\            | |         / _(_) (_)    ( )      / ____|     (_)    | |           \n\
+              \ | |  | | __ _ _ __ | | _____  | |_ _   _ _ __|/ ___  | (___  _ __  _  ___| | ___ _ __  \n\
+              \ | |  | |/ _` | '_ \\| |/ / _ \\ |  _| | | | '__| / __|  \\___ \\| '_ \\| |/ _ \\ |/ _ \\ '_ \\ \n\
+              \ | |__| | (_| | | | |   <  __/ | | | |_| | |    \\__ \\  ____) | |_) | |  __/ |  __/ | | |\n\
+              \ |_____/ \\__,_|_| |_|_|\\_\\___| |_|  \\__,_|_|    |___/ |_____/| .__/|_|\\___|_|\\___|_| |_|\n\
+              \                                                             | |                        \n\
+              \                                                             |_|                        \n"
+            ]
         }
-    
   ]
 
 -- | Returns the gameLoopElement with the given number from the gameLoopElements list, if it exists
