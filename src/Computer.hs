@@ -74,7 +74,7 @@ getInput = do
       case key of
         "\DEL" -> if not (null str) then getInput' (init str) else getInput' ""
         "\n" -> return str
-        _ -> getInput' (str ++ key)
+        _ -> if length key == 1 then getInput' (str ++ key) else getInput' str
 
 redColorCode :: Int
 redColorCode = 31
@@ -87,6 +87,7 @@ flashColor :: Int -> Int -> Int -> IO ()
 flashColor colorCode numberOfTimes delay
   | numberOfTimes == 0 = return ()
   | otherwise = do
+      disableInputEcho
       let pos = 1081
       clearComputerAscii
       if even numberOfTimes
@@ -94,6 +95,7 @@ flashColor colorCode numberOfTimes delay
         else putStrLn computerAscii
       threadDelay (delay * 1000)
       flashColor colorCode (numberOfTimes - 1) delay
+      enableInputEcho
 
 -- | Flashes the computer led red for the given number of times with the given delay in milliseconds
 flashRed :: Int -> Int -> IO ()
