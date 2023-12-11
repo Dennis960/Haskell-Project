@@ -10,7 +10,7 @@ Das Projekt beinhaltet Verschlüsselungsalgorithmen, Optionsmenus, die Möglichk
 
 ## Installationsschritte zum Ausführen des Docker Image aus der GitHub Container Registry
 
-- Installation von Docker Desktop oder einer ähnliche Docker Umgebung
+- Installation von Docker Desktop oder einer ähnlichen Docker Umgebung
 - Starten des Docker Daemon (indem die installierte Docker Desktop Anwendung gestartet wird)
 - Öffnen einer Kommandozeile / eines Terminals (cmd, powershell, bash, etc.)
 - Ausführen von `docker pull ghcr.io/dennis960/haskell-project:latest`
