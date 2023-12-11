@@ -298,7 +298,7 @@ gameLoopElements =
               "Vigenère-Chiffre, 'WEITP'",
               "______________"
             ],
-          storySecret = "hallo",
+          storySecret = "Weltformel",
           storyCypherFunction = (`vigenereCipher` "WEITP")
         },
     StoryTextItem
