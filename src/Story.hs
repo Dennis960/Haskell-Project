@@ -6,7 +6,7 @@ module Story
   )
 where
 
-import Cipher (caesarCipher, morseCode, reverseText, tapCode)
+import Cipher (caesarCipher, morseCode, reverseText, tapCode, columnarTranspositionCipher)
 import Distribution.Compat.CharParsing (CharParsing (text))
 import GameLoopElement
   ( GameLoopElement (..),
@@ -153,7 +153,8 @@ gameLoopElements =
               "[ u:  ..- ] | [ v: ...- ] | [ w:  .-- ] | [ x: -..- ]",
               "            | [ y: -.-- ] | [ z: --.. ] |",
               "",
-              "Mit dem Tagebuch in der Hand blickst du erneut auf die Einritzungen in der Tür."
+              "Mit dem Tagebuch in der Hand blickst du erneut auf die Einritzungen in der Tür.",
+              "Ah und ich darf hier natürlich nicht vergessen, dass der große Meister immer Kleinbuchstaben verwendet hat.»"
             ]
         },
     StorySecretItem
@@ -162,7 +163,6 @@ gameLoopElements =
             [ "______________",
               "$SECRET",
               "Morsecode",
-              "(Kleinbuchstaben)",
               "______________"
             ],
           storySecret = "sos",
@@ -190,10 +190,10 @@ gameLoopElements =
               "Du findest dich vor einem Tor wieder.",
               "Doch irgendetwas ist anders.", "Du kannst keinen Hinweis zu einem Rätsel finden an dem Tor.",
               "«Das ist doch nicht möglich. Der große Meister hat doch immer Rätsel hinterlassen.»",
-              "Ungläubig blätterst du im Tagebuch weiter bis du eine Seite findest, betitelt: «Tap-Code»",
-              "Instinktiv lauschst du in die Dunkelheit...und kannst ein leises Klopfen ausmachen.",
+              "Ungläubig blätterst du im Tagebuch weiter bis du eine Seite findest, betitelt: 'Klopfcode'.",
               "«Natürlich! Die Klopftöne sind das Rätsel!",
               "Die Anzahl der Töne bestimmt dabei jeweils immer zuerst die Zeile der Übersetzungstabelle und das Klopfen direkt danach entspricht dem der Spalte.»",
+              "Ah und ich darf hier natürlich nicht vergessen, dass der große Meister immer Kleinbuchstaben verwendet hat.»",
               "",
               "   | 1 | 2 | 3 | 4 | 5 |",
               "---+---+---+---+---+---+",
@@ -213,8 +213,7 @@ gameLoopElements =
         { storySecretText =
             [ "______________",
               "$SECRET",
-              "Tap-Code",
-              "(Kleinbuchstaben)",
+              "Klopfcode",
               "______________"
             ],
           storySecret = "sos",
@@ -223,10 +222,51 @@ gameLoopElements =
     StoryTextItem
       StoryText
         { storyTextText =
-            [ "Was würde ich nur ohne das Tagebuch machen. Der große Meister ist wirklich ein Genie.",
+            [ "«Was würde ich nur ohne das Tagebuch machen. Der große Meister ist wirklich ein Genie.»",
               "Du gehst durch das Tor und findest dich in einem weiteren Raum wieder.",
               "«Ich bin so nah dran. Ich kann es fühlen.»",
               "Du gehst weiter."
+            ]
+        },
+    WaitForEnterKeyItem,
+    RoomItem
+      RoomElement
+        { roomName = "room_upper"
+        },
+    StoryTextItem
+      StoryText
+        { storyTextText =
+            [ "«Ah, wir sind anscheinend zurück zu unseren verschlüsselten Wörtern.»",
+              "Neben den vertrauten verschlüsselten Wörtern und Schlüssel findest du noch in kleinerer Schrift geschrieben: ",
+              "In der Vielfalt der Spalten liegt die Stärke des Ganzen",
+              "«Hm, das muss wohl ein Hinweis sein, um welche Art Rätsel es sich handelt»",
+              "Du blätterst weiter im Tagebuch, bis du eine Seite findest, wo das Wort 'Spalte' öfters hervorgehoben ist.",
+              "«Alles klar nach den Anweisungen muss ich: ",
+              "1. Die Spaltenlänge bestimmen indem ich die Länge der verschlüsselten Nachricht durch die Länge des Schlüsselwortes teile.",
+              "2. Die verschlüsselte Nachricht spaltenweise aufschreiben. Die Länge des Schlüssels bestimmt dabei die Anzahl der Spalten.",
+              "3. Das Schlüsselwort alphabetisch sortiere und dann buchstabenweise über die Spalten schreibe.",
+              "4. Die Spalten umsortiere, sodass die Buchstaben wieder das Schlüsselwort ergeben.",
+              "5. Zum Schluss muss ich dann nurnoch zeilenweise die entschlüsselte Nachricht ablesen und voilà",
+              "Ah und ich darf hier natürlich nicht vergessen, dass Abstände wichtig sind.»"
+            ]
+        },
+   StorySecretItem
+      StorySecret
+        { storySecretText =
+            [ "______________",
+              "$SECRET",
+              "Spaltentausch Chiffre, 'bald",
+              "______________"
+            ],
+          storySecret = "hallo",
+          storyCypherFunction = (`columnarTranspositionCipher` "bald")
+        },
+    StoryTextItem
+      StoryText
+        { storyTextText =
+            [ "«Ich glaube nach diesem Abenteuer kann ich mich nicht nur als Besitzer der Weltformel betiteln, sondern auch als Rätselmeister.",
+              "Es kann jedoch nicht mehr weit sein! Es sind nurnoch ein paar Seiten im Tagebuch übrig.»",
+              "Du gehst durch die Tür und findest dich in einem neuem Raum wieder."
             ]
         },
     WaitForEnterKeyItem,
