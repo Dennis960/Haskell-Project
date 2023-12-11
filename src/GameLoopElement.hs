@@ -1,5 +1,6 @@
 module GameLoopElement where
 
+import Computer (clearComputerAscii, flashGreen, flashRed, getInput)
 import GHC.IO.Handle (hFlush)
 import KeyEvents (disableInputEcho, enableInputEcho)
 import StringReplace (replaceSubstring)
@@ -50,14 +51,14 @@ tellStory gameLoopElement@(StoryTextItem _) = do
 -- | Waits for the user to enter the correct solution for the given story.
 waitForStorySolution :: GameLoopElement -> IO ()
 waitForStorySolution story = do
-  putStr ">> "
-  hFlush stdout
-  input <- getLine
+  input <- getInput
   if isStoryInputCorrect story input
     then do
+      flashGreen 6 300
       return ()
     else do
-      putStrLn "Das Terminal piept einmal kurz und leuchtet rot auf."
+      flashRed 6 300
+      clearComputerAscii
       waitForStorySolution story
 
 -- | Checks if the given input is correct for the given story.
