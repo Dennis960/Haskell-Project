@@ -116,11 +116,12 @@ printTaps 0 = []
 printTaps x = "tap"++ printTaps (x - 1)
 
 
+test = sortColsByAlphabet (adjustLengths(generateColumns "Geeks for Geeks" "HACK"))
+
 --columnar transposition cipher -------
---TODO fill with spaces if not enough letters
 columnarTranspositionCipher :: String -> String -> String
 columnarTranspositionCipher [] _ = []
-columnarTranspositionCipher word key = let sortedCol = sortColsByAlphabet (generateColumns word key) in
+columnarTranspositionCipher word key = let sortedCol = sortColsByAlphabet (adjustLengths((generateColumns word key))) in
    concat [snd col | col <- sortedCol]
 
 -- | generates columns from word with key
@@ -132,6 +133,21 @@ generateColumns [] _ = []
 generateColumns word [] = []
 generateColumns word key= [(key !! col, generateColumn word (length key) col) | col  <- [0..length key - 1] ]
 
+-- | adjusts the length of every column to the length of the longest column
+adjustLengths :: [(Char, String)] -> [(Char, String)]
+adjustLengths [] = []
+adjustLengths columns = matchColLength columns (findMaxColLength columns)
+
+-- | finds the longest column
+findMaxColLength :: [(Char, String)] -> Int
+findMaxColLength [] = 0
+findMaxColLength ((col, letters):xs) = max (length letters) (findMaxColLength xs)
+
+-- | matches the length of every column to the length of the longest column
+matchColLength :: [(Char, String)] -> Int -> [(Char, String)]
+matchColLength [] _ = []
+matchColLength ((col, letters):xs) maxColLength = [(col, letters ++ replicate (maxColLength - length letters) ' ')] ++ matchColLength xs maxColLength
+
 -- | gets every n-th letter from word
 generateColumn :: String -> Int -> Int -> String 
 generateColumn word keylength columnnum= [word !! pos | pos <- [0..length word-1], pos `mod` keylength == columnnum]
@@ -141,5 +157,5 @@ sortColsByAlphabet :: [(Char, String)] -> [(Char, String)]
 sortColsByAlphabet [] = []
 sortColsByAlphabet ((col, letters):xs) = sortColsByAlphabet ys ++ [(col, letters)] ++ sortColsByAlphabet zs
     where
-        ys = [a | a <- xs, fst a <= col]
-        zs = [b | b <- xs, fst b > col]
+        ys = [a | a <- xs, toLower (fst a) <= toLower col]
+        zs = [b | b <- xs, toLower (fst b) > toLower col]
