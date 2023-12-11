@@ -118,7 +118,7 @@ gameLoopElements =
               "«Natürlich! Ich muss nur jeden Buchstaben um 3 Stellen zurück verschieben, dann ist das Rätsel gelöst.»",
               "Daneben ist ein Terminal, in welches du einen Text eingeben kannst."
             ],
-          storySecret = "Verliere nicht den Mut",
+          storySecret = "Es braucht viel Mut",
           storyCypherFunction = (`caesarCipher` 3)
         },
     StoryTextItem
@@ -165,7 +165,7 @@ gameLoopElements =
               "Morsecode",
               "______________"
             ],
-          storySecret = "sos",
+          storySecret = "immer weiter so",
           storyCypherFunction = morseCode
         },
     StoryTextItem
@@ -216,7 +216,7 @@ gameLoopElements =
               "Klopfcode",
               "______________"
             ],
-          storySecret = "sos",
+          storySecret = "trete ein",
           storyCypherFunction = tapCode
         },
     StoryTextItem
@@ -258,7 +258,7 @@ gameLoopElements =
               "Spaltentausch Chiffre, 'bald",
               "______________"
             ],
-          storySecret = "hallo",
+          storySecret = "Preis in Sicht",
           storyCypherFunction = (`columnarTranspositionCipher` "bald")
         },
     StoryTextItem
