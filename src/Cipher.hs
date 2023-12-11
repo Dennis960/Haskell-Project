@@ -100,6 +100,7 @@ tapCode [] = []
 tapCode [x] = determineTapAmount x
 tapCode (x : xs)
   | toLower x `elem` ['a'..'z'] = determineTapAmount x ++ " " ++ tapCode xs
+  | x == ' ' = "   " ++ tapCode xs
   | otherwise = x : tapCode xs
 
 determineTapAmount :: Char -> String
