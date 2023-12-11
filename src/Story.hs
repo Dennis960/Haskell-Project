@@ -6,7 +6,7 @@ module Story
   )
 where
 
-import Cipher (caesarCipher, morseCode, reverseText, tapCode, columnarTranspositionCipher, vigenereCipher)
+import Cipher (caesarCipher, columnarTranspositionCipher, morseCode, reverseText, tapCode, vigenereCipher)
 import Distribution.Compat.CharParsing (CharParsing (text))
 import GameLoopElement
   ( GameLoopElement (..),
@@ -102,7 +102,7 @@ gameLoopElements =
               "",
               "Du ärgerst dich, dass du dich an diese Stelle nicht erinnert hast.",
               "Jetzt aufgeben ist jedoch keine Option.",
-              "«Vielleicht gibt es ja wieder einen Weg zurück nach oben",
+              "«Vielleicht gibt es ja wieder einen Weg zurück nach oben»",
               "Du blickst auf und betrachtest die Tür vor dir.",
               "Die zuvor unbekannte Lichtquelle lässt sich als eine weitere leuchtende Gravierung identifizieren."
             ]
@@ -114,7 +114,7 @@ gameLoopElements =
               "$SECRET",
               "Caesar Chiffre, 3",
               "______________",
-              "Hektisch blätterst du im Tagebuch weiter bis du die Seite findest:",
+              "Hektisch blätterst du im Tagebuch weiter, bis du die Seite findest:",
               "«Natürlich! Ich muss nur jeden Buchstaben um 3 Stellen zurück verschieben, dann ist das Rätsel gelöst.»",
               "Daneben ist ein Terminal, in welches du einen Text eingeben kannst."
             ],
@@ -124,9 +124,9 @@ gameLoopElements =
     StoryTextItem
       StoryText
         { storyTextText =
-            [ "Die Tür schwingt ächzend auf. Du kannst in der Dunkelheit einen weiteren, verwinkelten Flur ausmachen.",
-              "«Ich weiß wirklich nicht ob ich den großen Meister bewundern oder verachten soll.",
-              "Doch scheinbar ist das der einzige Weg um voranzukommen..»",
+            [ "Die Tür schwingt ächzend auf. Du kannst in der Dunkelheit einen weiteren verwinkelten Flur ausmachen.",
+              "«Ich weiß wirklich nicht, ob ich den großen Meister bewundern oder verachten soll.",
+              "Doch scheinbar ist das der einzige Weg, um voranzukommen...»",
               "Die Tür fällt hinter dir zu, nachdem du den neuen Gang betrittst."
             ]
         },
@@ -138,7 +138,7 @@ gameLoopElements =
     StoryTextItem
       StoryText
         { storyTextText =
-            [ "«Endlich, eine Tür! Doch was ist das? Anstatt Buchstaben sind Symbole in die Tür eingeritzt.»",
+            [ "«Endlich, eine Tür! Doch was ist das? Statt Buchstaben sind Symbole in die Tür eingeritzt.»",
               "Du fährst mit einem Finger behutsam entlang der Einritzungen in der Tür.",
               "«Hmm, anscheinend hat dieses Rätsel etwas mit Punkten und Strichen zu tun.",
               "Vielleicht kann mir das Tagebuch wieder helfen.»",
@@ -153,8 +153,7 @@ gameLoopElements =
               "[ u:  ..- ] | [ v: ...- ] | [ w:  .-- ] | [ x: -..- ]",
               "            | [ y: -.-- ] | [ z: --.. ] |",
               "",
-              "Mit dem Tagebuch in der Hand blickst du erneut auf die Einritzungen in der Tür.",
-              "Ah und ich darf hier natürlich nicht vergessen, dass der große Meister immer Kleinbuchstaben verwendet hat.»"
+              "Mit dem Tagebuch in der Hand blickst du erneut auf die Einritzungen in der Tür."
             ]
         },
     StorySecretItem
@@ -172,8 +171,8 @@ gameLoopElements =
       StoryText
         { storyTextText =
             [ "«Geschafft! Die Tür öffnet sich.»",
-              "Du gehst hindurch und findest...eine Treppe.",
-              "«Eine Treppe? Wie unerwartet...Vielleicht führt sie mich wieder zurück nach oben. Naja alles ist besser als weiter hier unten im Dunkeln zu sitzen.»",
+              "Du gehst hindurch und findest... eine Treppe.",
+              "«Eine Treppe? Wie unerwartet... vielleicht führt sie mich wieder zurück nach oben. Naja, alles ist besser, als weiter hier unten im Dunkeln zu sitzen.»",
               "Du erklimmst die erste Stufe."
             ]
         },
@@ -185,15 +184,15 @@ gameLoopElements =
     StoryTextItem
       StoryText
         { storyTextText =
-            [ "«Endlich! Ich dachte schon die Stufen würden nie enden.»",
+            [ "«Endlich! Ich dachte schon, die Stufen würden nie enden.»",
               "Nach Luft schnappend blickst du dich um.",
               "Du findest dich vor einem Tor wieder.",
-              "Doch irgendetwas ist anders.", "Du kannst keinen Hinweis zu einem Rätsel finden an dem Tor.",
+              "Doch irgendetwas ist anders.",
+              "Du kannst keinen Hinweis zu einem Rätsel finden.",
               "«Das ist doch nicht möglich. Der große Meister hat doch immer Rätsel hinterlassen.»",
-              "Ungläubig blätterst du im Tagebuch weiter bis du eine Seite findest, betitelt: 'Klopfcode'.",
+              "Ungläubig blätterst du im Tagebuch weiter, bis du eine Seite mit dem Titel 'Klopfcode' findest.",
               "«Natürlich! Die Klopftöne sind das Rätsel!",
               "Die Anzahl der Töne bestimmt dabei jeweils immer zuerst die Zeile der Übersetzungstabelle und das Klopfen direkt danach entspricht dem der Spalte.»",
-              "Ah und ich darf hier natürlich nicht vergessen, dass der große Meister immer Kleinbuchstaben verwendet hat.»",
               "",
               "   | 1 | 2 | 3 | 4 | 5 |",
               "---+---+---+---+---+---+",
@@ -205,7 +204,9 @@ gameLoopElements =
               "---+---+---+---+---+---+",
               " 4 | q | r | s | t | u |",
               "---+---+---+---+---+---+",
-              " 5 | v | w | x | y | z |"
+              " 5 | v | w | x | y | z |",
+              "",
+              "Gespannt lauschst du dem Klopfen, welches dich schon die ganze Zeit begleitet hat."
             ]
         },
     StorySecretItem
@@ -236,21 +237,21 @@ gameLoopElements =
     StoryTextItem
       StoryText
         { storyTextText =
-            [ "«Ah, wir sind anscheinend zurück zu unseren verschlüsselten Wörtern.»",
-              "Neben den vertrauten verschlüsselten Wörtern und Schlüssel findest du noch in kleinerer Schrift geschrieben: ",
-              "In der Vielfalt der Spalten liegt die Stärke des Ganzen",
+            [ "«Diese Wörter. Sie kommen mir so bekannt vor. Ja! Das sind doch die verschlüsselten Wörter der Rätsel, die ich auf dem Weg hierher gelöst habe!»",
+              "Neben den vertrauten verschlüsselten Wörtern und Schlüsseln findest du noch in kleinerer Schrift geschrieben: ",
+              "'In der Vielfalt der Spalten liegt die Stärke des Ganzen'",
               "«Hm, das muss wohl ein Hinweis sein, um welche Art Rätsel es sich handelt»",
               "Du blätterst weiter im Tagebuch, bis du eine Seite findest, wo das Wort 'Spalte' öfters hervorgehoben ist.",
               "«Alles klar nach den Anweisungen muss ich: ",
-              "1. Die Spaltenlänge bestimmen indem ich die Länge der verschlüsselten Nachricht durch die Länge des Schlüsselwortes teile.",
+              "1. Die Spaltenlänge bestimmen indem ich die Länge der verschlüsselten Nachricht durch die Länge des Schlüsselwortes teile. Die Zahl wird dabei aufgerundet.",
               "2. Die verschlüsselte Nachricht spaltenweise aufschreiben. Die Länge des Schlüssels bestimmt dabei die Anzahl der Spalten.",
-              "3. Das Schlüsselwort alphabetisch sortiere und dann buchstabenweise über die Spalten schreibe.",
-              "4. Die Spalten umsortiere, sodass die Buchstaben wieder das Schlüsselwort ergeben.",
-              "5. Zum Schluss muss ich dann nurnoch zeilenweise die entschlüsselte Nachricht ablesen und voilà",
-              "Ah und ich darf hier natürlich nicht vergessen, dass Abstände wichtig sind.»"
+              "3. Das Schlüsselwort alphabetisch sortieren und dann buchstabenweise über die Spalten schreiben.",
+              "4. Die Spalten umsortieren, sodass die Buchstaben wieder das Schlüsselwort ergeben.",
+              "5. Zum Schluss muss ich dann nur noch zeilenweise die entschlüsselte Nachricht ablesen und bin fertig.",
+              "Ich darf hier natürlich nicht vergessen, dass Abstände wichtig sind.»"
             ]
         },
-   StorySecretItem
+    StorySecretItem
       StorySecret
         { storySecretText =
             [ "______________",
@@ -265,8 +266,8 @@ gameLoopElements =
       StoryText
         { storyTextText =
             [ "«Ich glaube nach diesem Abenteuer kann ich mich nicht nur als Besitzer der Weltformel betiteln, sondern auch als Rätselmeister.",
-              "Es kann jedoch nicht mehr weit sein! Es ist nurnoch eine Seite im Tagebuch übrig.»",
-              "Du gehst durch die Tür und findest dich in einem neuem Raum wieder."
+              "Es kann nicht mehr weit sein! Es ist nurnoch eine Seite im Tagebuch übrig.»",
+              "Du gehst durch die Tür und findest dich in einem neuen Raum wieder."
             ]
         },
     WaitForEnterKeyItem,
@@ -279,15 +280,14 @@ gameLoopElements =
         { storyTextText =
             [ "«Das muss es sein! Das letzte Rätsel!»",
               "Eilig untersuchst du die Tür.",
-              "«Neben einem kryptischen Text findest du noch einen weiteren Hinweis:",
+              "Neben einem kryptischen Text findest du noch einen weiteren Hinweis:",
               "'Denke zurück an die Anfänge deiner Reise. Die Lösung ist dort versteckt.'",
               "«Die Anfänge meiner Reise? Was kann das bloß bedeuten...»",
-              "Du blätterst im Tagebuch zurück.",
-              "«Natürlich! Das muss es sein! Mit Anfängen meint er die Anfänge der Rätselwörter. Füge ich diese zusammen ergibt sich bestimmt der Schlüssel!»",
-              "Du blätterst hektisch auf die letzte Seite des Tagebuches zurück.",
-              "«Danach muss ich nurnoch buchstabenweise das Schlüsselwort um die Position des Buchstaben des Schlüssels zurückverschieben;",
-              "also den ersten Buchstaben des Schlüsselwortes mit dem ersten Buchstaben des Schlüssels und so weiter.»",
-              "«Da der Schlüssel kürzer ist als das Wort, muss ich den Schlüssel nur sooft wiederholen bis er ausreicht.»"
+              "Du blätterst im Tagebuch auf die letzte Seite.",
+              "«Natürlich! Das muss es sein! Mit Anfängen meint er die Anfänge der Rätselwörter. Füge ich diese zusammen ergibt sich bestimmt der Schlüssel!",
+              "Danach muss ich nur noch buchstabenweise das Schlüsselwort um so viele Stellen im Alphabet zurückverschieben, wie die Position des Buchstaben des Schlüssels im Alphabet ist.",
+              "Ist der Buchstabe des Schlüsselworts ein e und der Buchstabe des Schlüssels ein c, muss ich das e um 2 Buchstaben verschieben und erhalte ein c.",
+              "Da der Schlüssel kürzer ist als das Wort, muss ich den Schlüssel nur so oft wiederholen, bis er ausreicht.»"
             ]
         },
     StorySecretItem
