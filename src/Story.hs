@@ -6,7 +6,7 @@ module Story
   )
 where
 
-import Cipher (caesarCipher, morseCode, reverseText, tapCode, columnarTranspositionCipher)
+import Cipher (caesarCipher, morseCode, reverseText, tapCode, columnarTranspositionCipher, vigenereCipher)
 import Distribution.Compat.CharParsing (CharParsing (text))
 import GameLoopElement
   ( GameLoopElement (..),
@@ -265,11 +265,42 @@ gameLoopElements =
       StoryText
         { storyTextText =
             [ "«Ich glaube nach diesem Abenteuer kann ich mich nicht nur als Besitzer der Weltformel betiteln, sondern auch als Rätselmeister.",
-              "Es kann jedoch nicht mehr weit sein! Es sind nurnoch ein paar Seiten im Tagebuch übrig.»",
+              "Es kann jedoch nicht mehr weit sein! Es ist nurnoch eine Seite im Tagebuch übrig.»",
               "Du gehst durch die Tür und findest dich in einem neuem Raum wieder."
             ]
         },
     WaitForEnterKeyItem,
+    RoomItem
+      RoomElement
+        { roomName = "room_upper1"
+        },
+    StoryTextItem
+      StoryText
+        { storyTextText =
+            [ "«Das muss es sein! Das letzte Rätsel!»",
+              "Eilig untersuchst du die Tür.",
+              "«Neben einem kryptischen Text findest du noch einen weiteren Hinweis:",
+              "'Denke zurück an die Anfänge deiner Reise. Die Lösung ist dort versteckt.'",
+              "«Die Anfänge meiner Reise? Was kann das bloß bedeuten...»",
+              "Du blätterst im Tagebuch zurück.",
+              "«Natürlich! Das muss es sein! Mit Anfängen meint er die Anfänge der Rätselwörter. Füge ich diese zusammen ergibt sich bestimmt der Schlüssel!»",
+              "Du blätterst hektisch auf die letzte Seite des Tagebuches zurück.",
+              "«Danach muss ich nurnoch buchstabenweise das Schlüsselwort um die Position des Buchstaben des Schlüssels zurückverschieben;",
+              "also den ersten Buchstaben des Schlüsselwortes mit dem ersten Buchstaben des Schlüssels und so weiter.»",
+              "«Da der Schlüssel kürzer ist als das Wort, muss ich den Schlüssel nur sooft wiederholen bis er ausreicht.»"
+            ]
+        },
+    StorySecretItem
+      StorySecret
+        { storySecretText =
+            [ "______________",
+              "$SECRET",
+              "Vigenère-Chiffre, 'WEITP'",
+              "______________"
+            ],
+          storySecret = "hallo",
+          storyCypherFunction = (`vigenereCipher` "WEITP")
+        },
     StoryTextItem
       StoryText
         { storyTextText =
