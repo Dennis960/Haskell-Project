@@ -6,7 +6,7 @@ module Story
   )
 where
 
-import Cipher (caesarCipher, morseCode, reverseText)
+import Cipher (caesarCipher, morseCode, reverseText, tapCode)
 import Distribution.Compat.CharParsing (CharParsing (text))
 import GameLoopElement
   ( GameLoopElement (..),
@@ -162,16 +162,19 @@ gameLoopElements =
             [ "______________",
               "$SECRET",
               "Morsecode",
+              "(Kleinbuchstaben)",
               "______________"
             ],
-          -- TODO--------------------------------------------------------------------------------------
-          storySecret = "SOS",
+          storySecret = "sos",
           storyCypherFunction = morseCode
         },
     StoryTextItem
       StoryText
         { storyTextText =
-            [ "Wendeltreppe :D"
+            [ "«Geschafft! Die Tür öffnet sich.»",
+              "Du gehst hindurch und findest...eine Treppe.",
+              "«Eine Treppe? Wie unerwartet...Vielleicht führt sie mich wieder zurück nach oben. Naja alles ist besser als weiter hier unten im Dunkeln zu sitzen.»",
+              "Du erklimmst die erste Stufe."
             ]
         },
     WaitForEnterKeyItem,
@@ -179,6 +182,54 @@ gameLoopElements =
       RoomElement
         { roomName = "room_stairs"
         },
+    StoryTextItem
+      StoryText
+        { storyTextText =
+            [ "«Endlich! Ich dachte schon die Stufen würden nie enden.»",
+              "Nach Luft schnappend blickst du dich um.",
+              "Du findest dich vor einem Tor wieder.",
+              "Doch irgendetwas ist anders.", "Du kannst keinen Hinweis zu einem Rätsel finden an dem Tor.",
+              "«Das ist doch nicht möglich. Der große Meister hat doch immer Rätsel hinterlassen.»",
+              "Ungläubig blätterst du im Tagebuch weiter bis du eine Seite findest, betitelt: «Tap-Code»",
+              "Instinktiv lauschst du in die Dunkelheit...und kannst ein leises Klopfen ausmachen.",
+              "«Natürlich! Die Klopftöne sind das Rätsel!",
+              "Die Anzahl der Töne bestimmt dabei jeweils immer zuerst die Zeile der Übersetzungstabelle und das Klopfen direkt danach entspricht dem der Spalte.»",
+              "",
+              "   | 1 | 2 | 3 | 4 | 5 |",
+              "---+---+---+---+---+---+",
+              " 1 | a | b |c/k| d | e |",
+              "---+---+---+---+---+---+",
+              " 2 | f | g | h | i | j |",
+              "---+---+---+---+---+---+",
+              " 3 | l | m | n | o | p |",
+              "---+---+---+---+---+---+",
+              " 4 | q | r | s | t | u |",
+              "---+---+---+---+---+---+",
+              " 5 | v | w | x | y | z |"
+            ]
+        },
+    StorySecretItem
+      StorySecret
+        { storySecretText =
+            [ "______________",
+              "$SECRET",
+              "Tap-Code",
+              "(Kleinbuchstaben)",
+              "______________"
+            ],
+          storySecret = "sos",
+          storyCypherFunction = tapCode
+        },
+    StoryTextItem
+      StoryText
+        { storyTextText =
+            [ "Was würde ich nur ohne das Tagebuch machen. Der große Meister ist wirklich ein Genie.",
+              "Du gehst durch das Tor und findest dich in einem weiteren Raum wieder.",
+              "«Ich bin so nah dran. Ich kann es fühlen.»",
+              "Du gehst weiter."
+            ]
+        },
+    WaitForEnterKeyItem,
     StoryTextItem
       StoryText
         { storyTextText =
