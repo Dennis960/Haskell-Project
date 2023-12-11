@@ -99,6 +99,11 @@ It is written in Haskell.
 
 - Contains functions for printing special effects.
 
+### Computer
+
+- Contains functions for printing out the computer terminal.
+- Can flash in different colors. (Green, Red)
+
 ### Other files
 
 - /.devcontainer: Contains the devcontainer configuration for Visual Studio Code
