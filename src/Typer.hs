@@ -1,4 +1,4 @@
-module Typer (putTextNl, clearLines) where
+module Typer (putTextNl, clearLines, clearScreenMoveHome) where
 
 import Control.Concurrent (threadDelay)
 import KeyEvents (getKey, hasKey)
@@ -29,3 +29,7 @@ clearLines n = do
   putStr "\r"
   putStr $ "\ESC[" ++ show n ++ "A" -- move the cursor n lines up
   putStr "\ESC[J" -- clear the screen from the cursor position to the end of the screen
+
+-- | Clear the screen and move the cursor to the top left corner
+clearScreenMoveHome :: IO ()
+clearScreenMoveHome = putStr "\ESC[2J\ESC[H"

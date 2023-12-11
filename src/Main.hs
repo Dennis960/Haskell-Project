@@ -4,10 +4,12 @@ import GameLoopElement
     tellStory,
     waitForStorySolution,
   )
+import Introduction (playIntroduction)
 import KeyEvents (waitForEnterKey)
 import OptionMenu (selectOption)
 import Room (loadRoom, loopPlayerInsideRoom, printRoom)
-import Story (gameLoopElementsWithType, gameLoopElementsWithSolution, getGameLoopElement, lengthOfGameLoopElements)
+import Story (gameLoopElementsWithSolution, gameLoopElementsWithType, getGameLoopElement, lengthOfGameLoopElements)
+import Typer (clearScreenMoveHome)
 
 newtype GameState = GameState
   { gameElementNumber :: Int
@@ -42,29 +44,21 @@ data PlayMode = PlayMode | CheatMode deriving (Show, Eq)
 
 main :: IO ()
 main = do
-  putStrLn title
+  playIntroduction
   playMode <- selectOption "Wähle einen Spielmodus" [(PlayMode, "Normal"), (CheatMode, "Cheat")]
-  
+
   startIndex <-
     if playMode == CheatMode
       then selectOption "(Cheat Modus aktiviert) Wähle einen Startpunkt" (gameLoopElementsWithType ++ [(-1, "Alle Lösungen anzeigen")])
       else return 1
-  if startIndex == -1 then do
-    putStrLn "Lösungen:"
-    mapM_ print gameLoopElementsWithSolution
-    putStrLn "(Enter drücken zum Fortfahren)"
-    waitForEnterKey
-    main
-  else do
-    return ()
+  if startIndex == -1
+    then do
+      putStrLn "Lösungen:"
+      mapM_ print gameLoopElementsWithSolution
+      putStrLn "(Enter drücken zum Fortfahren)"
+      waitForEnterKey
+      main
+    else do
+      return ()
+  clearScreenMoveHome
   run (GameState {gameElementNumber = startIndex})
-
-title :: String
-title = "   _____ _       _                 __  __           _                     \n\
-\  / ____(_)     | |               |  \\/  |         | |                    \n\
-\ | |     _ _ __ | |__   ___ _ __  | \\  / | __ _  __| |_ __   ___  ___ ___ \n\
-\ | |    | | '_ \\| '_ \\ / _ \\ '__| | |\\/| |/ _` |/ _` | '_ \\ / _ \\/ __/ __|\n\
-\ | |____| | |_) | | | |  __/ |    | |  | | (_| | (_| | | | |  __/\\__ \\__ \\\n\
-\  \\_____|_| .__/|_| |_|\\___|_|    |_|  |_|\\__,_|\\__,_|_| |_|\\___||___/___/\n\
-\          | |                                                             \n\
-\          |_|                                                             "

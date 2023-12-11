@@ -104,6 +104,10 @@ It is written in Haskell.
 - Contains functions for printing out the computer terminal.
 - Can flash in different colors. (Green, Red)
 
+### Introduction
+
+- Contains the loading sequence at the start of the game.
+
 ### Other files
 
 - /.devcontainer: Contains the devcontainer configuration for Visual Studio Code
