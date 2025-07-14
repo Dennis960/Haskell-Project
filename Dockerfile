@@ -1,4 +1,5 @@
-FROM mcr.microsoft.com/devcontainers/base
+# --- Builder Stage ---
+FROM debian:bullseye-slim AS builder
 
 ENV LANG C.UTF-8
 
@@ -57,6 +58,31 @@ RUN mkdir -p dist
 RUN ghc -o dist/main -isrc src/Main.hs -outputdir build
 RUN cp -r src/rooms dist/.
 
+# --- Final Stage ---
+FROM debian:bullseye-slim
+
+ENV LANG C.UTF-8
+
+# Install zsh
+ARG INSTALL_ZSH="true"
+ARG USERNAME=vscode
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+
+COPY .devcontainer/library-scripts/*.sh /tmp/library-scripts/
+RUN apt-get update \
+    && export DEBIAN_FRONTEND=noninteractive \
+    && /bin/bash /tmp/library-scripts/common-debian.sh "${INSTALL_ZSH}" "${USERNAME}" "${USER_UID}" "${USER_GID}" "false" "true" "true" \
+    && rm -rf /tmp/library-scripts \
+    && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
+
+USER $USERNAME
+
 WORKDIR /haskell-project/dist
+
+# Copy only the built binary and needed files from builder
+COPY --from=builder /haskell-project/dist /haskell-project/dist
+
+SHELL ["/usr/bin/zsh", "-c"]
 
 CMD ["./main"]
