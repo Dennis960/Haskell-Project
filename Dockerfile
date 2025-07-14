@@ -1,5 +1,5 @@
 # --- Builder Stage ---
-FROM debian:bullseye-slim AS builder
+FROM alpine:latest AS builder
 
 ENV LANG C.UTF-8
 
@@ -8,26 +8,29 @@ ARG INSTALL_ZSH="true"
 # [Option] Upgrade OS packages to their latest versions
 ARG UPGRADE_PACKAGES="false"
 
-# Install needed packages and setup non-root user.
-# Use a separate RUN statement to add your own dependencies
+# Install necessary packages
+RUN apk add --no-cache \
+    bash \
+    curl \
+    gcc \
+    musl-dev \
+    libffi-dev \
+    gmp-dev \
+    numactl-dev \
+    ncurses-dev \
+    zlib-dev \
+    zsh \
+    make \
+    libc-dev \
+    linux-headers \
+    git
+
+# Setup non-root user
 ARG USERNAME=vscode
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
-COPY .devcontainer/library-scripts/*.sh /tmp/library-scripts/
-RUN apt-get update \
-    && export DEBIAN_FRONTEND=noninteractive \
-    && /bin/bash /tmp/library-scripts/common-debian.sh "${INSTALL_ZSH}" "${USERNAME}" "${USER_UID}" "${USER_GID}" "${UPGRADE_PACKAGES}" "true" "true"\
-    && rm -rf /tmp/library-scripts \
-    && apt-get install -y --no-install-recommends \
-        dpkg-dev \
-        gcc \
-        libc6-dev \
-        libffi-dev \
-        libgmp-dev \
-        libnuma-dev \
-        libtinfo-dev \
-        zlib1g-dev \
-    && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
+RUN addgroup -g $USER_GID $USERNAME \
+    && adduser -D -u $USER_UID -G $USERNAME $USERNAME
 
 # Install latest GHCup in the non-root user home
 USER $USERNAME
@@ -35,33 +38,36 @@ USER $USERNAME
 RUN mkdir -p "$HOME/.ghcup/bin" \
     && curl -LJ "https://downloads.haskell.org/~ghcup/x86_64-linux-ghcup" -o "$HOME/.ghcup/bin/ghcup" \
     && chmod +x "$HOME/.ghcup/bin/ghcup"
+
 ENV PATH="/home/$USERNAME/.cabal/bin:/home/$USERNAME/.ghcup/bin:$PATH"
 
 # [Choice] GHC version: recommended, latest, 9.2, 9.0, 8.10, 8.8, 8.6
-ARG GHC_VERSION="9.2"
+ARG GHC_VERSION="9.2.8"
 
-# Use GHCup to install versions of main utilities
-# If you prefer to let the Haskell extension install everything on demand,
-# comment out the lines below. In that case, you may need to manually run "cabal update""."
+# Attempt to install GHC and other tools
 RUN ghcup install ghc "${GHC_VERSION}" --set \
     && ghcup install cabal recommended --set \
     && ghcup install stack recommended --set \
     && ghcup install hls recommended --set \
     && cabal update
 
+# Setting up project for building
 WORKDIR /haskell-project
-
 COPY src /haskell-project/src
 
-# mkdir -p dist;ghc -o dist/main -isrc src/Main.hs -outputdir build;cp -r src/rooms dist/.;cd dist;./main
-RUN mkdir -p dist
-RUN ghc -o dist/main -isrc src/Main.hs -outputdir build
-RUN cp -r src/rooms dist/.
+# Build the project
+RUN mkdir -p dist \
+    && ghc -o dist/main -isrc src/Main.hs -outputdir build -optl-pthread \
+    && cp -r src/rooms dist/.
 
+USER root
 # --- Final Stage ---
-FROM debian:bullseye-slim
+FROM alpine
 
-ENV LANG C.UTF-8
+# Install runtime dependencies
+RUN apk add --no-cache gmp
+
+ENV LANG=C.UTF-8
 
 WORKDIR /haskell-project/dist
 
